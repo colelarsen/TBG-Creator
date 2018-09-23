@@ -1,59 +1,48 @@
 package com.example.colea.tbg_creator_larsen.GameObjects;
 
+import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.TestConditional;
+import java.util.UUID;
+
 public class State {
 
-    private String[] transitionOptions = new String[8];
-    private String[] onTransition = new String[8];
-    private State[] transitions = new State[8];
-    private String text = "";
+    private Transition[] transitions = new Transition[8];
+    private String text;
+    private UUID id;
 
-    public State()
-    {
+    public State(String desc) {
+        text = desc;
+        id = UUID.randomUUID();
     }
 
-    public static State getStartState()
-    {
-        State startState = new State();
-        startState.text = "Welcome Entrance to of Dungeon";
+    //Temporary
+    public static State getStartState() {
+        State startState = new State("Welcome to the Entrance of the Dungeon");
+        State temp1 = new State("You are now in the Dungeon");
+        State temp2 = new State("You are now in Town");
 
-        State temp1 = new State();
-        State temp2 = new State();
+        temp1.getTransitions()[0] = new Transition("Return to Dungeon Entrance", "You take the stairs upwards");
+        temp2.getTransitions()[0] = new Transition("Return to Dungeon Entrance", "You take the stairs down into the Dungeon Entrance");
 
-        startState.transitionOptions[0] = "Go to the Dungeon";
-        startState.onTransition[0] = "You walk down the Stairs";
-        startState.transitionOptions[1] = "Go to Town";
-        startState.onTransition[1] = "You walk back to Town";
+        startState.transitions[0] = new Transition("Enter the Dungeon", "You take the stairs downwards into the Dungeon");
+        startState.transitions[1] = new Transition("Go to Town", "You took the path to the Town");
+        startState.transitions[0].setState(temp1);
+        startState.transitions[1].setState(temp2);
+        temp1.transitions[0].setState(startState);
+        temp1.transitions[1] = new Transition("Go all the way to Town", "You walk up the stairs and down the path to town");
+        TestConditional test = new TestConditional();
+        test.setConditional("true", null, null);
+        temp1.transitions[1].setConditional(test);
+        temp1.transitions[1].setState(temp2);
+        temp2.transitions[0].setState(startState);
 
-        temp1.text = "Entered the Dungeon";
-        temp1.getTransitions()[0] = startState;
-        temp1.getTransitionOptions()[0] = "Return to Dungeon Entrance";
-        temp1.onTransition[0] = "You walk back up the stairs";
-        temp2.text = "Went to Town";
-        temp2.getTransitions()[0] = startState;
-        temp2.getTransitionOptions()[0] = "Return to Dungeon Entrance";
-        temp2.onTransition[0] = "You walk back to the Dungeon Entrance";
-        startState.transitions[0] = temp1;
-        startState.transitions[1] = temp2;
         return startState;
     }
 
-    public State[] getTransitions()
-    {
+    public Transition[] getTransitions() {
         return transitions;
     }
 
-    public String getText()
-    {
+    public String getText() {
         return text;
-    }
-
-    public String[] getTransitionOptions()
-    {
-        return transitionOptions;
-    }
-
-    public String[] getOnTransition()
-    {
-        return  onTransition;
     }
 }
