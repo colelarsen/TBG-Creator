@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button">
+        app:layout_constraintTop_toBottomOf="@+id/info">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,7 +89,7 @@
                 android:onClick="choiceMade"
                 android:tag="0"
                 android:text="1"
-                app:layout_constraintEnd_toStartOf="@+id/op1"
+                app:layout_constraintEnd_toStartOf="@+id/spell"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="574dp" />
@@ -108,7 +108,7 @@
                 android:text="2"
                 app:layout_constraintEnd_toStartOf="@+id/op2"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/op0"
+                app:layout_constraintStart_toEndOf="@+id/attack"
                 tools:layout_editor_absoluteY="574dp" />
 
             <Button
@@ -125,7 +125,7 @@
                 android:text="3"
                 app:layout_constraintEnd_toStartOf="@+id/op3"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/op1"
+                app:layout_constraintStart_toEndOf="@+id/spell"
                 tools:layout_editor_absoluteY="574dp" />
 
             <Button
@@ -168,7 +168,7 @@
                 android:text="5"
                 app:layout_constraintEnd_toStartOf="@+id/op5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/op0" />
+                app:layout_constraintTop_toBottomOf="@+id/attack" />
 
             <Button
                 android:id="@+id/op5"
@@ -183,9 +183,9 @@
                 android:onClick="choiceMade"
                 android:tag="5"
                 android:text="6"
-                app:layout_constraintEnd_toStartOf="@+id/op6"
-                app:layout_constraintStart_toEndOf="@+id/op4"
-                app:layout_constraintTop_toBottomOf="@+id/op1" />
+                app:layout_constraintEnd_toStartOf="@+id/defend"
+                app:layout_constraintStart_toEndOf="@+id/item"
+                app:layout_constraintTop_toBottomOf="@+id/spell" />
 
             <Button
                 android:id="@+id/op6"
@@ -218,22 +218,40 @@
                 android:tag="7"
                 android:text="8"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/op6"
+                app:layout_constraintStart_toEndOf="@+id/defend"
                 app:layout_constraintTop_toBottomOf="@+id/op3" />
         </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:onClick="showPlayerInfo"
         android:text="Info"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/testCombat"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="showCombat"
+        android:text="Test Combat"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintStart_toEndOf="@+id/info"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

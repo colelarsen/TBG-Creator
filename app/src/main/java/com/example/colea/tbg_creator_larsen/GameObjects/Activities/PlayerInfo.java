@@ -115,19 +115,23 @@ public class PlayerInfo extends AppCompatActivity {
         }
 
 
-
+        private View pinfoView;
         public void setUpPlayerInfo(View view)
         {
+            pinfoView = view;
             EditText playerInfo = view.findViewById(R.id.playerInfoText);
             Player p = Player.getPlayer();
             Inventory i = Inventory.getInventory();
             playerInfo.getText().clear();
-            playerInfo.getText().append("Name: " + p.name + "\nHealth: " + p.health +  "\nDefence: " + p.defenceScore + "\nGold: " + i.gold);
+            playerInfo.getText().append("Name: " + p.name + "\nHealth: " + p.getHealth() +  "\nDefence: " + p.defence() + "\nGold: " + i.gold);
+            playerInfo.getText().append("\nAttack: " + p.attack());
             playerInfo.setKeyListener(null);
         }
 
 
         private static View vi;
+
+
         public void setUpPlayerInventory(View view)
         {
             vi = view;
@@ -221,7 +225,7 @@ public class PlayerInfo extends AppCompatActivity {
                         }
                         Log.d("Inventory Testing Equip", "Sword");
                     }
-
+                    setUpPlayerInfo(v.getRootView());
                     setUpPlayerInventory(vi);
                     break;
                 }

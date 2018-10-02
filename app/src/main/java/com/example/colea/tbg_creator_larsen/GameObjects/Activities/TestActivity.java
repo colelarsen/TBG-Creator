@@ -3,7 +3,6 @@ package com.example.colea.tbg_creator_larsen.GameObjects.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Equipment;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Inventory;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
+import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Weapon;
 import com.example.colea.tbg_creator_larsen.GameObjects.R;
 import com.example.colea.tbg_creator_larsen.GameObjects.State;
@@ -38,15 +38,16 @@ public class TestActivity extends AppCompatActivity {
 
 
         x.add(new Weapon("Sword", "A sword of great Strength", 20 , false, 10));
-        x.add(new Weapon("BIGGER SWORD", "A sword of great Strength", 20 , false, 10));
+        x.add(new Weapon("BIGGER SWORD", "A sword of great Strength", 20 , false, 15));
         x.add(new Equipment("Chainmail", "A sword of great Strength", 20 , false, 10));
-        x.add(new Equipment("Plate Armor", "A sword of great Strength", 20 , false, 10));
+        x.add(new Equipment("Plate Armor", "A sword of great Strength", 20 , false, 15));
 
         Log.d("Inventory Testing Add I", x.itemString());
 
         x.add(new Item("Key", "A key", 0, true));
         //x.getItems().get(0).drop();
         //Log.d("Inventory Testing drop", x.itemString());
+
     }
 
     public void setUpStartState()
@@ -80,6 +81,11 @@ public class TestActivity extends AppCompatActivity {
     public void showPlayerInfo(View view)
     {
         startActivity(new Intent(TestActivity.this, PlayerInfo.class));
+    }
+
+    public void showCombat(View view)
+    {
+        startActivity(new Intent(TestActivity.this, Combat.class));
     }
 
     public void choiceMade(Button presser, View view)

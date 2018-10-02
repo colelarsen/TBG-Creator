@@ -9,10 +9,11 @@ public class Item {
     private String description;
     private boolean keyItem;
 
-    private Item()
+    public Item()
     {
 
     }
+
 
     public Item(String nam, String desc, int val, boolean key)
     {
