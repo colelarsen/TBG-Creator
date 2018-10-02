@@ -32,34 +32,6 @@ public class Combat extends AppCompatActivity {
     public static int TURN_DURATION = 2000;
     private View currentView;
 
-    //Checks to see if combat is over and sets combatOngoing accordingly
-    public void combatOver(Player p)
-    {
-        boolean enemiesHealth = false;
-        boolean playerHasHealth = p.getHealth() > 0;
-        for(Enemy enemy : enemies)
-        {
-            if(enemy.health > 0)
-            {
-                enemiesHealth = true;
-            }
-        }
-        combatOngoing = (playerHasHealth && enemiesHealth);
-
-        if(combatOngoing == false)
-        {
-            if(!playerHasHealth) {
-                TextView combatInfo = findViewById(R.id.combatInfo);
-                combatInfo.setText("You Died");
-            }
-            else
-            {
-                TextView combatInfo = findViewById(R.id.combatInfo);
-                combatInfo.setText("All Enemies Dead or Neutral");
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +56,7 @@ public class Combat extends AppCompatActivity {
 
         TextView combatInfo = findViewById(R.id.combatInfo);
         combatInfo.setKeyListener(null);
-        combatInfo.setText(Player.getPlayer().name + "'s Turn");
+        updateCombatInfo(Player.getPlayer().name + "'s Turn");
 
         TextView playerInfo = findViewById(R.id.player_Info);
         playerInfo.setKeyListener(null);
@@ -141,111 +113,26 @@ public class Combat extends AppCompatActivity {
         updatePlayerCombat(view);
     }
 
-    //Called when the select button on the player is pressed
-    public void playerSelected(View view) {
-        TextView combatInfo = findViewById(R.id.combatInfo);
-
-        //If it's the player's turn and a target needs to be selected
-        if(playerTurn && (combatInfo.getText().toString().compareTo("Select Target") == 0)) {
-            combatInfo.setText(playerAction + Player.getPlayer().name);
-
-            if(playerAction.compareTo(Player.getPlayer().name + " Attacked ") == 0)
-            {
-                int damage = calculateDamage(Player.getPlayer().attack(), Player.getPlayer().defence(), false);
-                combatInfo.setText(playerAction + Player.getPlayer().name + " for " + damage + " damage");
-                Player.setHealth((Player.getPlayer().getHealth() - damage < 0)? 0 : Player.getPlayer().getHealth() - damage);
-            }
-            setUpCombatants(vi);
-            playerAction = "";
-            if(Player.getHealth() > 0) {
-                currentTurnOver(true);
-            }
-            else
-            {
-                combatOngoing = false;
-                Handler h=new Handler();
-                h.postDelayed(new Runnable(){
-                    @Override
-                    public void run(){
-                        TextView combatInfo = findViewById(R.id.combatInfo);
-                        combatInfo.setText(Player.getPlayer().name + " Killed Themselves");
-                    }
-                }, 1000);
-                endCombat();
-            }
-        }
-    }
-
-    public int calcDefence(Object o)
-    {
-        if(o instanceof Player)
-        {
-            Player player = (Player)o;
-            int defence = player.defence();
-            if(isDefending)
-            {
-                defence = (defence == 0)? 1 : defence*2;
-            }
-            return defence;
-        }
-        else if(o instanceof Enemy)
-        {
-            Enemy en = (Enemy)o;
-            return en.defence();
-        }
-        return 0;
-    }
-
-    //Called when an enemy is selected
-    String playerAction = "";
-    public void selectEnemy(View view)
-    {
-        TextView combatInfo = findViewById(R.id.combatInfo);
-
-        //If it's the player's turn and a target needs to be selected
-        if(playerTurn && (combatInfo.getText().toString().compareTo("Select Target") == 0)) {
-            Enemy enemy = enemies[Integer.parseInt(view.getTag().toString())];
-            combatInfo.setText(playerAction + enemy.name);
-
-            if(playerAction.compareTo(Player.getPlayer().name + " Attacked ") == 0)
-            {
-                int damage = calculateDamage(Player.getPlayer().attack(), enemy.defence(), false);
-                combatInfo.setText(playerAction + enemy.name + " for " + damage + " damage");
-                enemy.health = (enemy.health - damage < 0)? 0 : enemy.health - damage;
-            }
-            setUpCombatants(vi);
-            playerAction = "";
-            currentTurnOver(true);
-        }
-    }
-
-    //Called at the end of the player turn and the end of the last enemy turn
-    public void currentTurnOver(boolean enemyTurn)
-    {
-        playerTurn = !enemyTurn;
-        if(playerTurn)
-        {
-            isDefending = false;
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText(Player.getPlayer().name + " Turn");
-            enableButtons();
+    //Makes it so the user cannot segue back out of combat
+    @Override
+    public void onBackPressed() {
+        if(combatOngoing) {
+            moveTaskToBack(true);
         }
         else
         {
-            disableButtons();
-        }
-        updatePlayerCombat(currentView);
-
-        combatOver(Player.getPlayer());
-        if(!combatOngoing) {
-            endCombat();
-        }
-
-        if(enemyTurn)
-        {
-            playEnemies(); //<-- put your code in here.
+            super.onBackPressed();
         }
     }
+
+
+
+
+    /*
+    ********************************************
+    Update UI
+    ********************************************
+    */
 
     //Disables player action buttons when it's the enemy turn
     private void disableButtons()
@@ -271,19 +158,220 @@ public class Combat extends AppCompatActivity {
         }
     }
 
-    //Segues back to the main game screen
-    public void endCombat()
+    public void updatePlayerCombat(View view)
     {
-        Handler h=new Handler();
-        h.postDelayed(new Runnable(){
-            @Override
-            public void run(){
-                //startActivity(new Intent(Combat.this, TestActivity.class));
-                //finish();
-                onBackPressed();
-            }
-        }, 4000);
+        Player player = Player.getPlayer();
+        TextView playerInfo = findViewById(R.id.player_Info);
+        String playerLine = String.format("%s: HP %d, Atk %d, Def %d", player.name, player.getHealth(), player.attack(), calcDefence(player));
+        while(playerLine.length() < 50)
+        {
+            playerLine += " ";
+        }
+        playerInfo.setText(playerLine);
     }
+
+    public void updateCombatInfo(String str)
+    {
+        TextView combatInfo = findViewById(R.id.combatInfo);
+        combatInfo.setText(str);
+    }
+
+
+
+
+
+    /*
+    ****************************************************
+    * Player Options
+    ****************************************************
+    */
+
+    public void attack(View view)
+    {
+        if(playerTurn) {
+            updateCombatInfo("Select Target");
+            playerAction = Player.getPlayer().name + " Attacked ";
+        }
+    }
+
+    private boolean isDefending = false;
+    public void defend(View view)
+    {
+        if(playerTurn) {
+            updateCombatInfo(Player.getPlayer().name + " Defended");
+            isDefending = true;
+            currentTurnOver(true);
+        }
+    }
+
+    public void useItem(View view)
+    {
+        if(playerTurn) {
+            updateCombatInfo("Select Target");
+            playerAction = Player.getPlayer().name + " Used Item on";
+        }
+    }
+
+    public void useSpell(View view)
+    {
+        if(playerTurn) {
+            updateCombatInfo("Select Target");
+            playerAction = Player.getPlayer().name + " Used Spell on";
+        }
+    }
+
+    public void talk(View view)
+    {
+        if(playerTurn) {
+            updateCombatInfo("Select Target");
+            playerAction = Player.getPlayer().name + " Talked to";
+        }
+    }
+
+    public void runAway(View view)
+    {
+        if(playerTurn) {
+            updateCombatInfo(Player.getPlayer().name + " Attempts to Run Away");
+            if (Math.random() > 0.5) {
+                disableButtons();
+                combatOngoing = false;
+                Handler h=new Handler();
+                h.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        updateCombatInfo(Player.getPlayer().name + " Ran Away");
+                    }
+                }, 1000);
+                endCombat();
+            }
+            else {
+                currentTurnOver(true);
+            }
+
+        }
+    }
+
+    //Called when the select button on the player is pressed
+    public void playerSelected(View view) {
+        TextView combatInfo = findViewById(R.id.combatInfo);
+
+        //If it's the player's turn and a target needs to be selected
+        if(playerTurn && (combatInfo.getText().toString().compareTo("Select Target") == 0)) {
+            updateCombatInfo(playerAction + Player.getPlayer().name);
+
+            if(playerAction.compareTo(Player.getPlayer().name + " Attacked ") == 0)
+            {
+                int damage = calculateDamage(Player.getPlayer().attack(), Player.getPlayer().defence(), true, null);
+                updateCombatInfo(playerAction + Player.getPlayer().name + " for " + damage + " damage");
+            }
+            setUpCombatants(vi);
+            playerAction = "";
+            if(Player.getHealth() > 0) {
+                currentTurnOver(true);
+            }
+            else
+            {
+                combatOngoing = false;
+                Handler h=new Handler();
+                h.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        updateCombatInfo(Player.getPlayer().name + " Killed Themselves");
+                    }
+                }, 1000);
+                endCombat();
+            }
+        }
+    }
+
+
+    //Called when an enemy is selected
+    String playerAction = "";
+    public void selectEnemy(View view)
+    {
+        TextView combatInfo = findViewById(R.id.combatInfo);
+
+        //If it's the player's turn and a target needs to be selected
+        if(playerTurn && (combatInfo.getText().toString().compareTo("Select Target") == 0)) {
+            Enemy enemy = enemies[Integer.parseInt(view.getTag().toString())];
+            updateCombatInfo(playerAction + enemy.name);
+
+            if(playerAction.compareTo(Player.getPlayer().name + " Attacked ") == 0)
+            {
+                int damage = calculateDamage(Player.getPlayer().attack(), enemy.defence(), false, enemy);
+                updateCombatInfo(playerAction + enemy.name + " for " + damage + " damage");
+                enemy.health = (enemy.health - damage < 0)? 0 : enemy.health - damage;
+            }
+            setUpCombatants(vi);
+            playerAction = "";
+            currentTurnOver(true);
+        }
+    }
+
+
+
+
+
+    /*
+    ********************************************************
+    MATH
+    ********************************************************
+    */
+
+    public int calcDefence(Object o)
+    {
+        if(o instanceof Player)
+        {
+            Player player = (Player)o;
+            int defence = player.defence();
+            if(player.isDefending())
+            {
+                defence = (defence == 0)? 1 : defence*2;
+            }
+            return defence;
+        }
+        else if(o instanceof Enemy)
+        {
+            Enemy en = (Enemy)o;
+            int defence = en.defence();
+            if(en.isDefending())
+            {
+                defence = (defence == 0)? 1 : defence*2;
+            }
+            return defence;
+        }
+        return 0;
+    }
+
+    //Calculates damage and returns
+    public int calculateDamage(int attack, int defence, boolean againstPlayer, Enemy e)
+    {
+        if(againstPlayer)
+        {
+            Player player = Player.getPlayer();
+            defence = calcDefence(player);
+            int damage = (attack - defence > 0)? attack - defence: 0;
+
+            player.setHealth(player.getHealth() - damage);
+            return damage;
+        }
+        else
+        {
+            defence = calcDefence(e);
+            return (attack - defence > 0)? attack - defence: 0;
+        }
+    }
+
+
+
+
+
+
+    /*
+    ********************************************
+    ENEMY METHODS
+    ********************************************
+    */
 
     //Makes each enemy have a turn if they are still alive
     public void playEnemies()
@@ -292,7 +380,9 @@ public class Combat extends AppCompatActivity {
         for(int i = 0; i < enemies.length; i++)
         {
             if(enemies[i].health != 0) {
+                enemies[i].turnStarts();
                 enemyTurn(enemies[i], (i-deadEn + 1) * TURN_DURATION, lastAliveEnemy(i));
+                enemies[i].turnOver();
             }
             else
             {
@@ -320,58 +410,6 @@ public class Combat extends AppCompatActivity {
         return lastAlive;
     }
 
-    //Makes it so the user cannot segue back out of combat
-    @Override
-    public void onBackPressed() {
-        if(combatOngoing) {
-            moveTaskToBack(true);
-        }
-        else
-        {
-            super.onBackPressed();
-        }
-    }
-
-    //Called at the end of every enemies turn
-    public void enemyTurnOver()
-    {
-         combatOver(Player.getPlayer());
-        if(!combatOngoing) {
-            endCombat();
-        }
-    }
-
-    //Calculates damage and returns
-    public int calculateDamage(int attack, int defence, boolean againstPlayer)
-    {
-        if(againstPlayer)
-        {
-            Player player = Player.getPlayer();
-            defence = calcDefence(player);
-            int damage = (attack - defence > 0)? attack - defence: 0;
-
-            player.setHealth(player.getHealth() - damage);
-            return damage;
-        }
-        else
-        {
-            return (attack - defence > 0)? attack - defence: 0;
-        }
-    }
-
-    public void updatePlayerCombat(View view)
-    {
-        Player player = Player.getPlayer();
-        TextView playerInfo = findViewById(R.id.player_Info);
-        String playerLine = String.format("%s: HP %d, Atk %d, Def %d", player.name, player.getHealth(), player.attack(), calcDefence(player));
-        while(playerLine.length() < 50)
-        {
-            playerLine += " ";
-        }
-        playerInfo.setText(playerLine);
-
-    }
-
     //Individual enemy turn
     public void enemyTurn(Enemy enemy, int delay, boolean last)
     {
@@ -380,8 +418,8 @@ public class Combat extends AppCompatActivity {
         h.postDelayed(new EnemyRunnable(enemy){
             @Override
             public void run(){
-                TextView combatInfo = findViewById(R.id.combatInfo);
-                combatInfo.setText(this.enemy.name + " Attacked for " + calculateDamage(enemy.attack(), -1, true) +  " Damage");
+
+                updateCombatInfo(this.enemy.name + " Attacked for " + calculateDamage(enemy.attack(), -1, true, null) +  " Damage");
                 setUpCombatants(vi);
                 enemyTurnOver();
             }
@@ -399,75 +437,96 @@ public class Combat extends AppCompatActivity {
         }
     }
 
-    public void attack(View view)
+    //Called at the end of every enemies turn
+    public void enemyTurnOver()
     {
-        if(playerTurn) {
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText("Select Target");
-            playerAction = Player.getPlayer().name + " Attacked ";
+        combatOver(Player.getPlayer());
+        if(!combatOngoing) {
+            endCombat();
         }
     }
 
-    private boolean isDefending = false;
-    public void defend(View view)
-    {
-        if(playerTurn) {
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText(Player.getPlayer().name + " Defended");
-            isDefending = true;
-            currentTurnOver(true);
-        }
-    }
 
-    public void useItem(View view)
-    {
-        if(playerTurn) {
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText("Select Target");
-            playerAction = Player.getPlayer().name + " Used Item on";
-        }
-    }
 
-    public void useSpell(View view)
-    {
-        if(playerTurn) {
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText("Select Target");
-            playerAction = Player.getPlayer().name + " Used Spell on";
-        }
-    }
 
-    public void talk(View view)
-    {
-        if(playerTurn) {
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText("Select Target");
-            playerAction = Player.getPlayer().name + " Talked to";
-        }
-    }
 
-    public void runAway(View view)
+
+    /*
+    ***************************************************
+    General Combat Methods
+    ***************************************************
+    */
+
+    //Segues back to the main game screen
+    public void endCombat()
     {
-        if(playerTurn) {
-            TextView combatInfo = findViewById(R.id.combatInfo);
-            combatInfo.setText(Player.getPlayer().name + " Attempts to Run Away");
-            if (Math.random() > 0.5) {
-                disableButtons();
-                combatOngoing = false;
-                Handler h=new Handler();
-                h.postDelayed(new Runnable(){
-                    @Override
-                    public void run(){
-                        TextView combatInfo = findViewById(R.id.combatInfo);
-                        combatInfo.setText(Player.getPlayer().name + " Ran Away");
-                    }
-                }, 1000);
-                endCombat();
+        Player p = Player.getPlayer();
+        p.combatOver();
+        Handler h=new Handler();
+        h.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                //startActivity(new Intent(Combat.this, TestActivity.class));
+                //finish();
+                onBackPressed();
             }
-            else {
-                currentTurnOver(true);
-            }
+        }, 4000);
+    }
 
+    //Checks to see if combat is over and sets combatOngoing accordingly
+    public void combatOver(Player p)
+    {
+        boolean enemiesHealth = false;
+        boolean playerHasHealth = p.getHealth() > 0;
+        for(Enemy enemy : enemies)
+        {
+            if(enemy.health > 0)
+            {
+                enemiesHealth = true;
+            }
+        }
+        combatOngoing = (playerHasHealth && enemiesHealth);
+
+        if(combatOngoing == false)
+        {
+            if(!playerHasHealth) {
+                updateCombatInfo("You Died");
+            }
+            else
+            {
+                updateCombatInfo("All Enemies Dead or Neutral");
+            }
+        }
+    }
+
+    //Called at the end of the player turn and the end of the last enemy turn
+    public void currentTurnOver(boolean enemyTurn)
+    {
+        playerTurn = !enemyTurn;
+        Player player = Player.getPlayer();
+        String combatInf = "";
+        if(playerTurn)
+        {
+            player.turnStarts();
+
+            combatInf = player.name + "'s Turn";
+            updateCombatInfo(combatInf);
+            enableButtons();
+        }
+        else
+        {
+            disableButtons();
+        }
+
+        updatePlayerCombat(currentView);
+        combatOver(Player.getPlayer());
+        if(!combatOngoing) {
+            endCombat();
+        }
+
+        if(enemyTurn)
+        {
+            playEnemies(); //<-- put your code in here.
         }
     }
 }
