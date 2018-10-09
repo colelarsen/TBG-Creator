@@ -10,16 +10,22 @@ abstract public class Effect {
     //Healing
 
 
+    public abstract String getDescription();
+
+    public abstract String getName();
+
     //This object can be Player or [Enemy]
-    public abstract void effect(Object o);
+    public abstract String effect(Object o);
 
     //Will always be Player or Enemy
     public abstract void undo(Object o);
 
-    public abstract void remove(Object o);
-
     public  abstract int getDuration();
 
     public abstract boolean skipsTurn();
+
+    public abstract boolean combatOnly();
+
+    public abstract int getId();
 
 }

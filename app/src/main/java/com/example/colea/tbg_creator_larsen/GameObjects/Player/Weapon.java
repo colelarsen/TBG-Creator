@@ -1,8 +1,8 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Player;
 
-public class Weapon extends Item {
-    static int uniqueItemNumCounter = 0;
+import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
 
+public class Weapon extends Item {
     private int id;
     private int value;
     private String name;
@@ -18,14 +18,14 @@ public class Weapon extends Item {
         value = val;
         keyItem = key;
         attack = attak;
-        id = Item.uniqueItemNumCounter++;
+        id = GameController.getId();
     }
 
     public void drop()
     {
         if(!keyItem)
         {
-            Inventory.getInventory().drop(id);
+            Player.getPlayer().inventory.drop(id);
         }
     }
 

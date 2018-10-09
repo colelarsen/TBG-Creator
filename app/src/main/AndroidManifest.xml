@@ -20,7 +20,9 @@
             android:name=".Activities.PlayerInfo"
             android:label="@string/title_activity_player_info"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.Combat"></activity>
+        <activity android:name=".Activities.Combat" />
+        <activity android:name=".Activities.Trading" />
+        <activity android:name=".Activities.Conversation"></activity>
     </application>
 
 </manifest>

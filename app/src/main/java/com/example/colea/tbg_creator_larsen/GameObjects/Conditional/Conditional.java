@@ -11,13 +11,9 @@ abstract public class Conditional {
     private Conditional and;
     private Conditional or;
 
-    public boolean check()
-    {
-        return true;
-    }
+    public abstract boolean check();
 
-    public void setConditional(String obj1, Conditional an, Conditional o)
-    {
+    public abstract int getId();
 
-    }
+    public abstract void setConditional(String obj1, Conditional an, Conditional o);
 }

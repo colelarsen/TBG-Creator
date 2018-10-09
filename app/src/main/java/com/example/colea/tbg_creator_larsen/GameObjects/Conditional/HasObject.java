@@ -1,13 +1,19 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Conditional;
 
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
+import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
 
 public class HasObject extends Conditional {
     private String object;
     private Conditional or;
     private Conditional and;
+    private int id;
 
-    @Override
+    public int getId()
+    {
+        return id;
+    }
+
     public boolean check() {
         if(or != null)
         {
@@ -24,10 +30,13 @@ public class HasObject extends Conditional {
         return true;
     }
 
+
+
     @Override
     public void setConditional(String obj1, Conditional an, Conditional o) {
         object = obj1;
         and = an;
         or = o;
+        id = GameController.getId();
     }
 }

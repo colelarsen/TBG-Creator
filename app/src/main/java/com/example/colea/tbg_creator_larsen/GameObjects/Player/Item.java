@@ -1,17 +1,20 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Player;
 
-public class Item {
-    static int uniqueItemNumCounter = 0;
+import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Effect;
+import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
 
+public class Item {
     private int id;
     private int value;
     private String name;
     private String description;
     private boolean keyItem;
+    private boolean useable;
+    private boolean inCombat;
+    private Effect effect;
 
     public Item()
     {
-
     }
 
 
@@ -21,14 +24,29 @@ public class Item {
         description = desc;
         value = val;
         keyItem = key;
-        id = Item.uniqueItemNumCounter++;
+        id = GameController.getId();
+        effect = null;
+        useable = false;
+        inCombat = false;
+    }
+
+    public Item(String nam, String desc, int val, boolean key, boolean usea, boolean inComb, Effect e)
+    {
+        name = nam;
+        description = desc;
+        value = val;
+        keyItem = key;
+        id = GameController.getId();
+        useable = usea;
+        inCombat = inComb;
+        effect = e;
     }
 
     public void drop()
     {
         if(!keyItem)
         {
-            Inventory.getInventory().drop(id);
+            Player.getPlayer().inventory.drop(id);
         }
     }
 
@@ -68,4 +86,10 @@ public class Item {
     public boolean isKeyItem() {
         return keyItem;
     }
+
+    public boolean combatOnly() { return inCombat; }
+
+    public boolean isUseable() { return useable; }
+
+    public Effect getEffect(){ return effect;}
 }

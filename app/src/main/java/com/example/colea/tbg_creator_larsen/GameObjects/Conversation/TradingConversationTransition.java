@@ -1,21 +1,22 @@
-package com.example.colea.tbg_creator_larsen.GameObjects;
+package com.example.colea.tbg_creator_larsen.GameObjects.Conversation;
 
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
+import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
 
-public class Transition {
+public class TradingConversationTransition extends ConversationTransition {
     private String displayString;
-    private String transitionString;
-    private State toTrans;
+    private ConversationState toTrans;
     private Conditional conditional;
+    public int id;
 
-    public Transition(String displayVal, String transVal)
+    public TradingConversationTransition(String displayVal)
     {
         displayString = displayVal;
-        transitionString = transVal;
-        toTrans = new State("");
+        toTrans = null;
+        id = GameController.getId();
     }
 
-    public void setState(State trans)
+    public void setState(ConversationState trans)
     {
         toTrans = trans;
     }
@@ -25,12 +26,8 @@ public class Transition {
         return displayString;
     }
 
-    public String getTransitionString()
-    {
-        return transitionString;
-    }
 
-    public State getState()
+    public ConversationState getState()
     {
         return toTrans;
     }
@@ -45,6 +42,6 @@ public class Transition {
         if(conditional != null) {
             return conditional.check();
         }
-            return true;
+        return true;
     }
 }

@@ -1,9 +1,17 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Conditional;
 
+import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
+
 public class TestConditional extends Conditional {
     private String object;
     private Conditional or;
     private Conditional and;
+    private int id;
+
+    public int getId()
+    {
+        return id;
+    }
 
     @Override
     public boolean check() {
@@ -26,5 +34,6 @@ public class TestConditional extends Conditional {
         object = obj1;
         and = an;
         or = o;
+        id = GameController.getId();
     }
 }
