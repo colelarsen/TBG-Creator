@@ -4,8 +4,6 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Activities.TestActivity;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
-import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.NormalConversationTransition;
-import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,14 +11,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NormalTransition extends Transition {
+public class OneTimeTransition extends Transition {
     private String displayString;
     private String transitionString;
     private State toTrans;
     private Conditional conditional;
+    private boolean goneYet = false;
     public int id;
 
-    public NormalTransition(String displayVal, String transVal)
+    public OneTimeTransition(String displayVal, String transVal)
     {
         displayString = displayVal;
         transitionString = transVal;
@@ -29,16 +28,15 @@ public class NormalTransition extends Transition {
 
     public int condId = -1;
     public int transId = -1;
-
     public ArrayList<Integer> chainIds;
-
-    public NormalTransition(String displayVal, String transVal, int i, int condI, int transI, ArrayList<Integer> chains)
+    public OneTimeTransition(String displayVal, String transVal, int i, int condI, int transI, boolean gone, ArrayList<Integer> chains)
     {
         displayString = displayVal;
         transitionString = transVal;
         id = i;
-        condId = condI;
         transId = transI;
+        condId = condI;
+        goneYet = gone;
         chainIds = chains;
     }
 
@@ -53,11 +51,10 @@ public class NormalTransition extends Transition {
         ///////////MOST TRANSITIONS HAVE THIS
     }
 
-    public static NormalTransition fromJSON(JSONObject nextObject)
+    public static OneTimeTransition fromJSON(JSONObject nextObject)
     {
-         /*
-        private ArrayList<Item> items;
-        private ArrayList<String> itemDescriptions;
+        /*
+        private boolean goneYet;
          */
         try {
             int id = nextObject.getInt("id");
@@ -80,8 +77,10 @@ public class NormalTransition extends Transition {
             {
                 chainIds.add(chainIdJSONArray.getInt(i));
             }
+
+            boolean goneYet = nextObject.getBoolean("goneYet");
             /////ALL TRANSITIONS SHOULD HAVE THIS////////////
-            return new NormalTransition(displayString, transitionString, id, condId, toTransId, chainIds);
+            return new OneTimeTransition(displayString, transitionString, id, condId, toTransId, goneYet, chainIds);
 
         }
         catch(JSONException e)
@@ -100,10 +99,11 @@ public class NormalTransition extends Transition {
         private State toTrans;
         private Conditional conditional;
         public int id;
+        private boolean goneYet;
          */
         try {
             JSONObject stateObject = new JSONObject();
-            stateObject.put("OBJECT TYPE", "NormalTransition");
+            stateObject.put("OBJECT TYPE", "OneTimeTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
             if(conditional != null) {
@@ -113,7 +113,7 @@ public class NormalTransition extends Transition {
             if(toTrans != null) {
                 stateObject.put("toTrans", toTrans.getId());
             }
-
+            stateObject.put("goneYet", goneYet);
             JSONArray chainIds = new JSONArray();
             for(Transition t : chainTransitions)
             {
@@ -129,6 +129,12 @@ public class NormalTransition extends Transition {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public int getId()
+    {
+        return id;
     }
 
     public void setState(State trans)
@@ -157,6 +163,7 @@ public class NormalTransition extends Transition {
         {
             transition.trans(t);
         }
+        goneYet = true;
         return toTrans;
     }
 
@@ -167,10 +174,13 @@ public class NormalTransition extends Transition {
 
     public boolean check()
     {
-        if(conditional != null) {
-            return conditional.check();
-        }
+        if(!goneYet) {
+            if (conditional != null) {
+                return conditional.check();
+            }
             return true;
+        }
+        return false;
     }
 
     private ArrayList<Transition> chainTransitions = new ArrayList<>();
@@ -179,11 +189,6 @@ public class NormalTransition extends Transition {
         if(!t.hasChain()) {
             chainTransitions.add(t);
         }
-    }
-
-    public int getId()
-    {
-        return id;
     }
 
     @Override

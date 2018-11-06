@@ -1,16 +1,22 @@
-package com.example.colea.tbg_creator_larsen.GameObjects;
+package com.example.colea.tbg_creator_larsen.GameObjects.Controllers;
 
 import com.example.colea.tbg_creator_larsen.GameObjects.Activities.TestActivity;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationState;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Effect;
+import com.example.colea.tbg_creator_larsen.GameObjects.Enemy;
+import com.example.colea.tbg_creator_larsen.GameObjects.NPC;
+import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.State;
+import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Transition;
 
 import java.util.ArrayList;
 
 public class GameController {
-    public static State currentState = State.getStartState();
+    public static State startState;
+    public static State currentState = startState;
     public static ArrayList<State> stateChain = new ArrayList<>();
     public static ArrayList<Effect> effects = new ArrayList<>();
-
     private static int id = 0;
 
     public static int getId()

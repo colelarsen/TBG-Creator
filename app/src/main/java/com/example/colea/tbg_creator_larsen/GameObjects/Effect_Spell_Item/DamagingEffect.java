@@ -1,8 +1,14 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item;
 
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
 import com.example.colea.tbg_creator_larsen.GameObjects.Enemy;
-import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DamagingEffect extends Effect{
 
@@ -17,6 +23,53 @@ public class DamagingEffect extends Effect{
         description = desc;
         damage = dam;
         id = GameController.getId();
+    }
+    public DamagingEffect(String nam, String desc, int dam, int i)
+    {
+        name = nam;
+        description = desc;
+        damage = dam;
+        id = i;
+    }
+
+    public void link(GameObjects gameObjects)
+    {
+
+    }
+
+    public static DamagingEffect fromJSON(JSONObject nextObject)
+    {
+        try {
+            String name = (String) nextObject.get("name");
+            String description = (String) nextObject.get("description");
+            int id = nextObject.getInt("id");
+            int damage = nextObject.getInt("damage");
+            return new DamagingEffect(name, description, damage, id);
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JSONObject toJSON()
+    {
+
+        try {
+            JSONObject stateObject = new JSONObject();
+            stateObject.put("OBJECT TYPE", "DamagingEffect");
+            stateObject.put("id", id);
+            stateObject.put("name", name);
+            stateObject.put("description", description);
+            stateObject.put("damage", damage);
+            return stateObject;
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //This object can be Player or Enemy

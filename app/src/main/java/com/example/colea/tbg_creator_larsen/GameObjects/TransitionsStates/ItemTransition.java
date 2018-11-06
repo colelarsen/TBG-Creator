@@ -4,8 +4,9 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Activities.TestActivity;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
-import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.NormalConversationTransition;
+import com.example.colea.tbg_creator_larsen.GameObjects.Enemy;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
+import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,32 +14,39 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NormalTransition extends Transition {
+public class ItemTransition extends Transition {
     private String displayString;
     private String transitionString;
     private State toTrans;
     private Conditional conditional;
+    private ArrayList<Item> items;
+    private ArrayList<String> itemDescriptions;
     public int id;
 
-    public NormalTransition(String displayVal, String transVal)
+    public ItemTransition(String displayVal, String transVal, ArrayList<Item> item, ArrayList<String> itemDesc)
     {
         displayString = displayVal;
         transitionString = transVal;
         id = GameController.getId();
+        items = item;
+        itemDescriptions = itemDesc;
     }
 
-    public int condId = -1;
     public int transId = -1;
+    public int condId = -1;
+    public ArrayList<Integer> itemIds;
 
     public ArrayList<Integer> chainIds;
 
-    public NormalTransition(String displayVal, String transVal, int i, int condI, int transI, ArrayList<Integer> chains)
+    public ItemTransition(String displayVal, String transVal, ArrayList<Integer> itemId, ArrayList<String> itemDesc, int i, int transI, int condI, ArrayList<Integer> chains)
     {
         displayString = displayVal;
         transitionString = transVal;
         id = i;
-        condId = condI;
+        itemIds = itemId;
+        itemDescriptions = itemDesc;
         transId = transI;
+        condId = condI;
         chainIds = chains;
     }
 
@@ -51,9 +59,16 @@ public class NormalTransition extends Transition {
             addChain((Transition)gameObjects.findObjectById(i.intValue()));
         }
         ///////////MOST TRANSITIONS HAVE THIS
+
+
+        items = new ArrayList<>();
+        for(Integer i : itemIds)
+        {
+            items.add((Item)gameObjects.findObjectById(i.intValue()));
+        }
     }
 
-    public static NormalTransition fromJSON(JSONObject nextObject)
+    public static ItemTransition fromJSON(JSONObject nextObject)
     {
          /*
         private ArrayList<Item> items;
@@ -81,7 +96,22 @@ public class NormalTransition extends Transition {
                 chainIds.add(chainIdJSONArray.getInt(i));
             }
             /////ALL TRANSITIONS SHOULD HAVE THIS////////////
-            return new NormalTransition(displayString, transitionString, id, condId, toTransId, chainIds);
+
+
+            JSONArray itemsJSON = nextObject.getJSONArray("items");
+            ArrayList<Integer> itemIds = new ArrayList<>();
+            for(int i = 0; i < itemsJSON.length(); i++)
+            {
+                itemIds.add(itemsJSON.getInt(i));
+            }
+
+            JSONArray itemStringsJSON = nextObject.getJSONArray("itemDesc");
+            ArrayList<String>itemStrings = new ArrayList<>();
+            for(int i = 0; i < itemStringsJSON.length(); i++)
+            {
+                itemStrings.add(itemStringsJSON.getString(i));
+            }
+            return new ItemTransition(displayString, transitionString, itemIds, itemStrings, id, toTransId, condId, chainIds);
 
         }
         catch(JSONException e)
@@ -99,11 +129,13 @@ public class NormalTransition extends Transition {
         private String transitionString;
         private State toTrans;
         private Conditional conditional;
+        private ArrayList<Item> items;
+        private ArrayList<String> itemDescriptions;
         public int id;
          */
         try {
             JSONObject stateObject = new JSONObject();
-            stateObject.put("OBJECT TYPE", "NormalTransition");
+            stateObject.put("OBJECT TYPE", "ItemTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
             if(conditional != null) {
@@ -113,6 +145,24 @@ public class NormalTransition extends Transition {
             if(toTrans != null) {
                 stateObject.put("toTrans", toTrans.getId());
             }
+
+            JSONArray itemsArray = new JSONArray();
+            for(Item t : items)
+            {
+                if(t != null) {
+                    itemsArray.put(t.getId());
+                }
+            }
+            stateObject.put("items", itemsArray);
+
+            JSONArray itemDescr = new JSONArray();
+            for(String t : itemDescriptions)
+            {
+                if(t != null) {
+                    itemDescr.put(t);
+                }
+            }
+            stateObject.put("itemDesc", itemDescr);
 
             JSONArray chainIds = new JSONArray();
             for(Transition t : chainTransitions)
@@ -157,7 +207,22 @@ public class NormalTransition extends Transition {
         {
             transition.trans(t);
         }
+        for(Item i : items)
+        {
+            Player.getPlayer().inventory.add(i);
+        }
+        items = null;
         return toTrans;
+    }
+
+    public String getItemDescriptions()
+    {
+        String ret = "";
+        for(String s : itemDescriptions)
+        {
+            ret += "\n" + s;
+        }
+        return ret;
     }
 
     public void setConditional(Conditional cond)
@@ -167,10 +232,13 @@ public class NormalTransition extends Transition {
 
     public boolean check()
     {
-        if(conditional != null) {
-            return conditional.check();
-        }
+        if(items != null) {
+            if (conditional != null) {
+                return conditional.check();
+            }
             return true;
+        }
+        return false;
     }
 
     private ArrayList<Transition> chainTransitions = new ArrayList<>();
@@ -181,14 +249,14 @@ public class NormalTransition extends Transition {
         }
     }
 
-    public int getId()
-    {
-        return id;
-    }
-
     @Override
     public boolean hasChain() {
         return !(chainTransitions.size() == 0);
+    }
+
+    public int getId()
+    {
+        return id;
     }
 
     @Override

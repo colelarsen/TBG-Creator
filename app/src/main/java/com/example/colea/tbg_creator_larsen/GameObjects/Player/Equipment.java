@@ -1,6 +1,10 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Player;
 
-import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Equipment extends Item {
 
@@ -20,6 +24,82 @@ public class Equipment extends Item {
         keyItem = key;
         defence = def;
         id = GameController.getId();
+    }
+
+    public Equipment(String nam, String desc, int val, boolean key, int def, int i)
+    {
+        name = nam;
+        description = desc;
+        value = val;
+        keyItem = key;
+        defence = def;
+        id = i;
+    }
+
+    @Override
+    public void link(GameObjects gameObjects)
+    {
+    }
+
+    public static Equipment fromJSON(JSONObject nextObject)
+    {
+        /*
+        stateObject.put("id", id);
+            stateObject.put("name", name);
+            stateObject.put("descriptions", description);
+            stateObject.put("value", value);
+            stateObject.put("keyItem", keyItem);
+            stateObject.put("defence", defence);
+            stateObject.put("OBJECT TYPE", "Weapon");
+         */
+
+        try {
+            int id = nextObject.getInt("id");
+            int value = nextObject.getInt("value");
+            boolean keyItem = nextObject.getBoolean("keyItem");
+            String name = (String)nextObject.get("name");
+            String description = (String)nextObject.get("descriptions");
+            int defence = nextObject.getInt("defence");
+            Equipment e = new Equipment(name, description, value, keyItem, defence, id);
+            return e;
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JSONObject toJSON()
+    {
+        try {
+            /*
+            name = nam;
+            description = desc;
+            value = val;
+            keyItem = key;
+            attack = attak;
+            id = GameController.getId();
+             */
+            JSONObject stateObject = new JSONObject();
+
+            stateObject.put("id", id);
+            stateObject.put("name", name);
+            stateObject.put("descriptions", description);
+            stateObject.put("value", value);
+            stateObject.put("keyItem", keyItem);
+            stateObject.put("defence", defence);
+            stateObject.put("OBJECT TYPE", "Equipment");
+            return stateObject;
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        return null;
+
     }
 
     public void drop()

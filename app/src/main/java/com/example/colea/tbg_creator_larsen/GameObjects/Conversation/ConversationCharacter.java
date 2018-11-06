@@ -7,4 +7,6 @@ public interface ConversationCharacter {
     ConversationState getStart();
     String getName();
     boolean passiveState(int i);
+    void setStartState(ConversationState state);
+    int getId();
 }

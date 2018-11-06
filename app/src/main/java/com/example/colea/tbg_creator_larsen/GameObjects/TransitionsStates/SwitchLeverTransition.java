@@ -2,10 +2,9 @@ package com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates;
 
 import com.example.colea.tbg_creator_larsen.GameObjects.Activities.TestActivity;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.ConditionalSwitch;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
-import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.NormalConversationTransition;
-import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,30 +12,31 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NormalTransition extends Transition {
+public class SwitchLeverTransition extends Transition {
     private String displayString;
     private String transitionString;
     private State toTrans;
     private Conditional conditional;
+    private String switc;
     public int id;
 
-    public NormalTransition(String displayVal, String transVal)
+    public SwitchLeverTransition(String displayVal, String transVal, String swit)
     {
         displayString = displayVal;
         transitionString = transVal;
         id = GameController.getId();
+        switc = swit;
     }
 
     public int condId = -1;
     public int transId = -1;
-
     public ArrayList<Integer> chainIds;
-
-    public NormalTransition(String displayVal, String transVal, int i, int condI, int transI, ArrayList<Integer> chains)
+    public SwitchLeverTransition(String displayVal, String transVal, String swit, int condI, int transI, int i, ArrayList<Integer> chains)
     {
         displayString = displayVal;
         transitionString = transVal;
         id = i;
+        switc = swit;
         condId = condI;
         transId = transI;
         chainIds = chains;
@@ -53,12 +53,8 @@ public class NormalTransition extends Transition {
         ///////////MOST TRANSITIONS HAVE THIS
     }
 
-    public static NormalTransition fromJSON(JSONObject nextObject)
+    public static SwitchLeverTransition fromJSON(JSONObject nextObject)
     {
-         /*
-        private ArrayList<Item> items;
-        private ArrayList<String> itemDescriptions;
-         */
         try {
             int id = nextObject.getInt("id");
             String displayString = nextObject.getString("displayString");
@@ -80,8 +76,10 @@ public class NormalTransition extends Transition {
             {
                 chainIds.add(chainIdJSONArray.getInt(i));
             }
+
+            String switc = nextObject.getString("switc");
             /////ALL TRANSITIONS SHOULD HAVE THIS////////////
-            return new NormalTransition(displayString, transitionString, id, condId, toTransId, chainIds);
+            return new SwitchLeverTransition(displayString, transitionString, switc, condId, toTransId, id, chainIds);
 
         }
         catch(JSONException e)
@@ -94,16 +92,9 @@ public class NormalTransition extends Transition {
     @Override
     public JSONObject toJSON()
     {
-        /*
-        private String displayString;
-        private String transitionString;
-        private State toTrans;
-        private Conditional conditional;
-        public int id;
-         */
         try {
             JSONObject stateObject = new JSONObject();
-            stateObject.put("OBJECT TYPE", "NormalTransition");
+            stateObject.put("OBJECT TYPE", "SwitchLeverTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
             if(conditional != null) {
@@ -114,6 +105,7 @@ public class NormalTransition extends Transition {
                 stateObject.put("toTrans", toTrans.getId());
             }
 
+            stateObject.put("switc", switc);
             JSONArray chainIds = new JSONArray();
             for(Transition t : chainTransitions)
             {
@@ -157,6 +149,7 @@ public class NormalTransition extends Transition {
         {
             transition.trans(t);
         }
+        ConditionalSwitch.switchSwitch(switc);
         return toTrans;
     }
 

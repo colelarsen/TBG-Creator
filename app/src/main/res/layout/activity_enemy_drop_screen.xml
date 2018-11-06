@@ -4,7 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Trading">
+    tools:context=".Activities.EnemyDropScreen">
+
+    <Button
+        android:id="@+id/EnemyDropOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:onClick="okPressed"
+        android:text="Ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView4"
@@ -16,10 +31,12 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/EnemyDropOk"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +44,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/vendorSell"
+                android:id="@+id/enemyScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:editable="false"
@@ -35,7 +52,7 @@
                 android:textSize="18sp" />
 
             <LinearLayout
-                android:id="@+id/vendorInventory"
+                android:id="@+id/enemyDropsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -45,7 +62,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/playerTrade"
+                android:id="@+id/playerTextEnemyDrop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:editable="false"
@@ -53,7 +70,7 @@
                 android:textSize="18sp" />
 
             <LinearLayout
-                android:id="@+id/playerTradeInventory"
+                android:id="@+id/playerEnemyDropLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -61,5 +78,4 @@
                 tools:layout_editor_absoluteY="232dp"></LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>

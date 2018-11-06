@@ -1,5 +1,9 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item;
 
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+
+import org.json.JSONObject;
+
 abstract public class Effect {
     //Weakens / Buffs Attack
     //Weakens / Buffs Defence
@@ -11,6 +15,10 @@ abstract public class Effect {
 
 
     public abstract String getDescription();
+
+    public abstract JSONObject toJSON();
+
+    public abstract void link(GameObjects gameObjects);
 
     public abstract String getName();
 

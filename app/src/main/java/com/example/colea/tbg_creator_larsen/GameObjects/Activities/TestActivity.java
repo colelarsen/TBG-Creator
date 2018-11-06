@@ -14,15 +14,13 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Damagi
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.DefenceEffect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.HealingEffect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Enemy;
-import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Equipment;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Inventory;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Weapon;
 import com.example.colea.tbg_creator_larsen.GameObjects.R;
-import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.CombatTransition;
-import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.ConvoTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.State;
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Transition;
 
@@ -37,8 +35,8 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         setUpStartState();
-        testInventory();
-        testSpells();
+        //testInventory();
+        //testSpells();
     }
 
 
@@ -62,7 +60,6 @@ public class TestActivity extends AppCompatActivity {
     {
         Inventory x = Player.getPlayer().inventory;
         Log.d("Inventory Testing", x.itemString(x));
-
 
         x.add(new Weapon("Sword", "A sword of great Strength", 20 , false, 10));
         x.add(new Weapon("BIGGER SWORD", "A sword of great Strength", 20 , false, 15));
@@ -114,6 +111,11 @@ public class TestActivity extends AppCompatActivity {
         startActivity(new Intent(TestActivity.this, PlayerInfo.class));
     }
 
+    public void onQuitClick(View view)
+    {
+        super.onBackPressed();
+    }
+
 
     public void showCombat(Enemy[] enemies)
     {
@@ -154,6 +156,12 @@ public class TestActivity extends AppCompatActivity {
             b.setAlpha(1f);
             b.setClickable(true);
         }
+    }
+
+    //Makes it so the user cannot segue back out of playing without saving / something else
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     public void choiceMade(View view)
@@ -202,7 +210,7 @@ public class TestActivity extends AppCompatActivity {
                         mainText.getText().append("\n" + onTrans);
                     }
 
-                    if(transitions[choice] instanceof CombatTransition || transitions[choice] instanceof ConvoTransition)
+                    if(transitions[choice].shouldStopButtons())
                     {
                         disableButtons();
                         Handler h=new Handler();

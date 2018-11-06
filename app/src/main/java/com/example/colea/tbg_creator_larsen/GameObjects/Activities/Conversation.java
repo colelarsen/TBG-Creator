@@ -59,6 +59,12 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
                     b.setOnClickListener(this);
                     chatOpsLay.addView(b);
                 }
+                else
+                {
+                    Button b = new Button(chatOpsLay.getContext());
+                    b.setText("");
+                    chatOpsLay.addView(b);
+                }
             }
             else
             {
@@ -83,19 +89,18 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
         int choice = (int) v.getTag();
         ConversationTransition[] transitions = currentState.getTransitions();
         ConversationTransition trans = transitions[choice];
-
-        if(trans instanceof NormalConversationTransition) {
-            updateText("You: " + trans.getDisplayString());
-            currentState = trans.getState();
-            updateText(currentNPC.getName() + ": " + currentState.getText());
-            updateButtons();
-        }
-        else if(trans instanceof TradingConversationTransition && currentNPC instanceof NPC)
-        {
-            NPC vendor = (NPC) currentNPC;
-            if(vendor.canTrade) {
-                Trading.vendor = vendor;
-                startActivity(new Intent(Conversation.this, Trading.class));
+        if(trans.check()) {
+            if (!(trans instanceof TradingConversationTransition && currentNPC instanceof NPC)) {
+                updateText("You: " + trans.getDisplayString());
+                currentState = trans.getState();
+                updateText(currentNPC.getName() + ": " + currentState.getText());
+                updateButtons();
+            } else if (trans instanceof TradingConversationTransition && currentNPC instanceof NPC) {
+                NPC vendor = (NPC) currentNPC;
+                if (vendor.canTrade) {
+                    Trading.vendor = vendor;
+                    startActivity(new Intent(Conversation.this, Trading.class));
+                }
             }
         }
 

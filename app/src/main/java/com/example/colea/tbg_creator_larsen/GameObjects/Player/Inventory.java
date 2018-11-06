@@ -7,7 +7,7 @@ public class Inventory {
     private static Inventory i = new Inventory();
 
     private ArrayList<Item> items;
-    private int itemCap;
+    public int itemCap;
     public int gold;
 
     private Inventory()

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Effect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Enemy;
 import com.example.colea.tbg_creator_larsen.GameObjects.EnemyRunnable;
-import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Equipment;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
@@ -29,6 +29,9 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     private boolean playerTurn = true;
     public static int TURN_DURATION = 2000;
     private View currentView;
+
+    //@ToDO
+    //Combat player dying is broken
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,8 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     {
         Weapon badWe = new Weapon("None", "None", 0, true, 1);
         Equipment badAr = new Equipment("None", "None", 0, true, 0);
-        Enemy rat = new Enemy(10, "Bagel", "Large Rat", badWe, badAr, null, null, false, null, null);
-        Enemy rat2 = new Enemy(10, "Rat But Bigger", "Large Rat", badWe, badAr, null, null, false, null, null);
+        Enemy rat = new Enemy(10, 10, "Bagel", "Large Rat", badWe, badAr, null, null, false, null, null);
+        Enemy rat2 = new Enemy(10, 10, "Rat But Bigger", "Large Rat", badWe, badAr, null, null, false, null, null);
 
         Enemy[] enemies = new Enemy[2];
         enemies[0] = rat;
@@ -128,10 +131,6 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     public void onBackPressed() {
         if(combatOngoing) {
             moveTaskToBack(true);
-        }
-        else
-        {
-            super.onBackPressed();
         }
     }
 
@@ -235,7 +234,6 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     {
         if(playerTurn) {
             updateCombatInfo("Select Spell");
-            //@TODO Add some way to choose a spell
 
             PopupMenu popup = new PopupMenu(this, view);
             popup.setOnMenuItemClickListener(this);
@@ -395,9 +393,8 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
         //If it's the player's turn and a target needs to be selected
         boolean talking = (playerAction.compareTo(Player.getPlayer().name + " Talked to") == 0);
 
-        if(playerTurn && (combatInfo.getText().toString().compareTo("Select Target") == 0) && !talking) {
-
-
+        if(playerTurn && (combatInfo.getText().toString().compareTo("Select Target") == 0) && !talking)
+        {
             if(playerAction.compareTo(Player.getPlayer().name + " Attacked ") == 0)
             {
                 int damage = calculateDamage(Player.getPlayer().attack(), enemy.defence(), false, enemy);
@@ -419,14 +416,20 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
         else
         {
             if(specifics[0].compareTo(Player.getPlayer().name + " Talked to") == 0)
-        {
-            if(enemy.canConverse)
             {
-                testConvo(enemy);
+                if(enemy.canConverse)
+                {
+                    disableButtons();
+                    testConvo(enemy);
+                }
+                else
+                {
+                    currentTurnOver(true);
+                    playerAction = "";
+                }
+                updateCombatInfo(Player.getPlayer().name + " is trying to talk to " + enemy.name);
+                playerTurn = false;
             }
-            updateCombatInfo(Player.getPlayer().name + " is trying to talk to " + enemy.name);
-            playerTurn = false;
-        }
         }
     }
 
@@ -614,15 +617,26 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     {
         Player p = Player.getPlayer();
         p.combatOver();
-        Handler h=new Handler();
-        h.postDelayed(new Runnable(){
-            @Override
-            public void run(){
-                //startActivity(new Intent(Combat.this, TestActivity.class));
-                //finish();
-                onBackPressed();
+
+        if(p.getHealth() > 0) {
+            for(Enemy e : enemies)
+            {
+                EnemyDropScreen.addToDrops(e.drops, e.dropChance);
+                e.combatOver();
             }
-        }, 4000);
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(Combat.this, EnemyDropScreen.class));
+                    finish();
+                }
+            }, 4000);
+        }
+        else //Player hecking died
+        {
+
+        }
     }
 
     //Checks to see if combat is over and sets combatOngoing accordingly

@@ -1,8 +1,9 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Conversation;
 
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
-import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationState;
-import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+
+import org.json.JSONObject;
 
 public abstract class ConversationTransition {
 
@@ -14,6 +15,11 @@ public abstract class ConversationTransition {
 
     public abstract String getDisplayString();
 
+    public abstract void link(GameObjects gameObjects);
+
+    public abstract int getId();
+
+    public abstract JSONObject toJSON();
 
     public abstract ConversationState getState();
 

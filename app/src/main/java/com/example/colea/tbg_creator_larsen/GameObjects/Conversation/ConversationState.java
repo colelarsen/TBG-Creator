@@ -1,7 +1,12 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Conversation;
 
-import com.example.colea.tbg_creator_larsen.GameObjects.GameController;
-import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.NormalTransition;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Transition;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ConversationState {
 
@@ -9,9 +14,78 @@ public class ConversationState {
     private String text;
     private int id;
 
+    private int[] transitionIds;
     public ConversationState(String desc) {
         text = desc;
         id = GameController.getId();
+    }
+
+    public ConversationState(String desc, int i, int[] transIDs) {
+        text = desc;
+        id = i;
+        transitionIds = transIDs;
+    }
+
+    public void link(GameObjects gameObjects)
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            if(transitionIds[i] != -1) {
+                transitions[i] = (ConversationTransition) gameObjects.findObjectById(transitionIds[i]);
+            }
+        }
+    }
+
+    public static ConversationState fromJSON(JSONObject nextObject)
+    {
+        try {
+            int id = nextObject.getInt("id");
+            String text = nextObject.getString("text");
+
+
+            int[] transIds = new int[4];
+            JSONArray ids = nextObject.getJSONArray("transitions");
+            for(int i = 0; i < ids.length(); i++)
+            {
+                transIds[i] = ids.getInt(i);
+            }
+            return new ConversationState(text, id, transIds);
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JSONObject toJSON()
+    {
+        try {
+            JSONObject stateObject = new JSONObject();
+            stateObject.put("OBJECT TYPE", "ConversationState");
+            stateObject.put("id", id);
+            stateObject.put("text", text);
+
+            JSONArray ids = new JSONArray();
+            for(ConversationTransition t : transitions)
+            {
+                if(t != null) {
+                    ids.put(t.getId());
+                }
+                else
+                {
+                    ids.put(-1);
+                }
+            }
+            stateObject.put("transitions", ids);
+
+            return stateObject;
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public int getId() {

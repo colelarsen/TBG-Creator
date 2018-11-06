@@ -8,8 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Activities.TestActivity">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,8 +21,12 @@
             android:label="@string/title_activity_player_info"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activities.Combat" />
+        <activity android:name=".Activities.TestActivity" />
         <activity android:name=".Activities.Trading" />
-        <activity android:name=".Activities.Conversation"></activity>
+        <activity android:name=".Activities.Conversation" />
+        <activity android:name=".Activities.EnemyDropScreen" />
+        <activity android:name=".Editing.EditMain" />
+        <activity android:name=".Editing.StateEditing"></activity>
     </application>
 
 </manifest>

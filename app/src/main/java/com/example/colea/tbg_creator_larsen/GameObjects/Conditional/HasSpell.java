@@ -1,31 +1,65 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Conditional;
 
-import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Effect;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-public class HasObject extends Conditional {
+public class HasSpell extends Conditional {
     private String object;
     private Conditional or;
     private Conditional and;
     private int id;
     private boolean not = false;
 
-    public HasObject()
+    public JSONObject toJSON()
+    {
+        try {
+            /*
+            private Conditional or;
+            private Conditional and;
+            private String object;
+            private int id;
+            private boolean not = false;
+            */
+            JSONObject stateObject = new JSONObject();
+            stateObject.put("OBJECT TYPE", "HasSpell");
+
+            stateObject.put("id", id);
+            stateObject.put("object", object);
+            if(or != null) {
+                stateObject.put("or", or.getId());
+            }
+            if(and != null) {
+                stateObject.put("and", and.getId());
+            }
+            stateObject.put("not", not);
+
+            return stateObject;
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        return null;
+
+    }
+
+    public HasSpell()
     {
         id = GameController.getId();
     }
 
     public int orId;
     public int andId;
-    public HasObject(int i, String objec, int aId, int oId, boolean no)
+    public HasSpell(int i, String objec, int oId, int aId, boolean no)
     {
+        id = i;
         object = objec;
         id = i;
         orId = oId;
@@ -39,7 +73,7 @@ public class HasObject extends Conditional {
         and = (Conditional) gameObjects.findObjectById(andId);
     }
 
-    public static HasObject fromJSON(JSONObject nextObject)
+    public static HasSpell fromJSON(JSONObject nextObject)
     {
         /*
             private Conditional or;
@@ -62,51 +96,13 @@ public class HasObject extends Conditional {
                 andId = nextObject.getInt("and");
             }
             boolean not = nextObject.getBoolean("not");
-            return new HasObject(id, object, andId, orId, not);
+            return new HasSpell(id, object, orId, andId, not);
         }
         catch(JSONException e)
         {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public JSONObject toJSON()
-    {
-        try {
-            /*
-            private static ArrayList<String> switches = new ArrayList<>();
-            private static ArrayList<Boolean> switchesValue = new ArrayList<>();
-            private Conditional or;
-            private Conditional and;
-            private String singleSwitch;
-            private int id;
-            private boolean not = false;
-            */
-            JSONObject stateObject = new JSONObject();
-
-            stateObject.put("id", id);
-            stateObject.put("OBJECT TYPE", "HasObject");
-
-            stateObject.put("object", object);
-            if(or != null) {
-                stateObject.put("or", or.getId());
-            }
-            if(and != null) {
-                stateObject.put("and", and.getId());
-            }
-            stateObject.put("not", not);
-
-            return stateObject;
-        }
-        catch(JSONException e)
-        {
-            e.printStackTrace();
-        }
-
-
-        return null;
-
     }
 
     public int getId()
@@ -114,19 +110,30 @@ public class HasObject extends Conditional {
         return id;
     }
 
+    public void not()
+    {
+        not = !not;
+    }
+
     public boolean check() {
+        boolean hasSpell = false;
         boolean ret = false;
+        for(Effect spell : Player.getPlayer().spells)
+        {
+            hasSpell = spell.getName().compareTo(object) == 0;
+        }
+
         if(or != null)
         {
-            ret = Player.getPlayer().inventory.findItemByName(object) != null || or.check();
+            ret = (hasSpell || or.check());
         }
         else if(and != null)
         {
-            ret = Player.getPlayer().inventory.findItemByName(object) != null && and.check();
+            ret = (hasSpell && and.check());
         }
         else
         {
-            ret = Player.getPlayer().inventory.findItemByName(object) != null;
+            ret = hasSpell;
         }
         if(not)
         {
@@ -136,11 +143,6 @@ public class HasObject extends Conditional {
         {
             return ret;
         }
-    }
-
-    public void not()
-    {
-        not = !not;
     }
 
     @Override
