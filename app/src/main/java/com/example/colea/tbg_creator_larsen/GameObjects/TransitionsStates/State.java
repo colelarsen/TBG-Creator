@@ -42,8 +42,8 @@ public class State {
 
     private Transition[] transitions = new Transition[8];
     private ArrayList<Integer> transitionIds = new ArrayList<>();
-    private String text;
-    private int id;
+    public String text;
+    public int id;
     public boolean isStartState = false;
     public String uniqueUserId = "";
 

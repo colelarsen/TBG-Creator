@@ -15,6 +15,10 @@ abstract public class Conditional {
     private Conditional and;
     private Conditional or;
 
+    public abstract String getUUID();
+
+    public abstract String getMainId();
+
     public abstract JSONObject toJSON();
 
     public abstract void link(GameObjects gameObjects);

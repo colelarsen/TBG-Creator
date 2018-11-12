@@ -15,14 +15,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ItemTransition extends Transition {
-    private String displayString;
-    private String transitionString;
-    private State toTrans;
-    private Conditional conditional;
-    private ArrayList<Item> items;
-    private ArrayList<String> itemDescriptions;
+    public String displayString;
+    public String transitionString;
+    public State toTrans;
+    public Conditional conditional;
+    public ArrayList<Item> items;
+    public ArrayList<String> itemDescriptions;
     public int id;
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
     public ItemTransition(String displayVal, String transVal, ArrayList<Item> item, ArrayList<String> itemDesc)
     {
         displayString = displayVal;
@@ -88,6 +93,11 @@ public class ItemTransition extends Transition {
             {
                 condId = nextObject.getInt("conditional");
             }
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
 
             JSONArray chainIdJSONArray = nextObject.getJSONArray("chainTransitions");
             ArrayList<Integer> chainIds = new ArrayList<>();
@@ -111,7 +121,9 @@ public class ItemTransition extends Transition {
             {
                 itemStrings.add(itemStringsJSON.getString(i));
             }
-            return new ItemTransition(displayString, transitionString, itemIds, itemStrings, id, toTransId, condId, chainIds);
+            ItemTransition itemTransition = new ItemTransition(displayString, transitionString, itemIds, itemStrings, id, toTransId, condId, chainIds);
+            itemTransition.uniqueUserId = uuid;
+            return itemTransition;
 
         }
         catch(JSONException e)
@@ -138,6 +150,7 @@ public class ItemTransition extends Transition {
             stateObject.put("OBJECT TYPE", "ItemTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
+            stateObject.put("uuid", uniqueUserId);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }
@@ -241,7 +254,7 @@ public class ItemTransition extends Transition {
         return false;
     }
 
-    private ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public ArrayList<Transition> chainTransitions = new ArrayList<>();
     @Override
     public void addChain(Transition t) {
         if(!t.hasChain()) {

@@ -24,6 +24,7 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameControll
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.MainAppController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Editing.EditMain;
+import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Effect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Inventory;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Item;
 import com.example.colea.tbg_creator_larsen.GameObjects.Player.Player;
@@ -128,7 +129,12 @@ public class MainActivity extends AppCompatActivity {
             State startState = gO.fromString(matchingGameString);
             GameController.startState = startState;
             GameController.currentState = startState;
+            for(Effect e : gO.effects)
+            {
+                GameController.effects.add(e);
+            }
             Player.setPlayer(gO.player);
+            Player.setHealth(Integer.MAX_VALUE);
         }
 
         private void editGamePressed(View view, String fileName)

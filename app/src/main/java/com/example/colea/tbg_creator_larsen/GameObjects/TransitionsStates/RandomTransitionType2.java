@@ -15,12 +15,17 @@ public class RandomTransitionType2 extends Transition {
 
     //TYPE 2
 
-    private Conditional conditional;
-    private ArrayList<Transition> transitions;
+    public Conditional conditional;
+    public ArrayList<Transition> transitions;
     private ArrayList<Double> lowChance = new ArrayList<>();
     private ArrayList<Double> highChance = new ArrayList<>();
     public int id;
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
     public RandomTransitionType2(ArrayList<Transition> transitio)
     {
         id = GameController.getId();
@@ -90,6 +95,12 @@ public class RandomTransitionType2 extends Transition {
                 condId = nextObject.getInt("conditional");
             }
 
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+
             JSONArray transIdsJSON = nextObject.getJSONArray("transitions");
             ArrayList<Integer> transIds = new ArrayList<>();
             for(int i = 0; i < transIdsJSON.length(); i++)
@@ -110,7 +121,9 @@ public class RandomTransitionType2 extends Transition {
             {
                 highChance.add(highChanceJSON.getDouble(i));
             }
-            return new RandomTransitionType2(transIds, lowChance, highChance, condId, id);
+            RandomTransitionType2 randomTransitionType2 = new RandomTransitionType2(transIds, lowChance, highChance, condId, id);
+            randomTransitionType2.uniqueUserId = uuid;
+            return randomTransitionType2;
         }
         catch(JSONException e)
         {
@@ -129,6 +142,7 @@ public class RandomTransitionType2 extends Transition {
                 stateObject.put("conditional", conditional.getId());
             }
             stateObject.put("id", id);
+            stateObject.put("uuid", uniqueUserId);
 
             JSONArray lowArray = new JSONArray();
             for(Double t : lowChance)

@@ -14,17 +14,30 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Item {
-    private int id;
-    private int value;
-    private String name;
-    private String description;
-    private boolean keyItem;
-    private boolean useable;
-    private boolean inCombat;
-    private Effect effect;
+    public int id;
+    public int value;
+    public String name;
+    public String description;
+    public boolean keyItem;
+    public boolean useable;
+    public boolean onlyInCombat;
+    public Effect effect;
+
 
     public Item()
     {
+    }
+
+    public String uniqueUserId = "";
+    public String getUniqueUserId()
+    {
+        if(!uniqueUserId.isEmpty()) {
+            return uniqueUserId;
+        }
+        else
+        {
+            return "" + id;
+        }
     }
 
 
@@ -61,6 +74,11 @@ public class Item {
             boolean inCombat = nextObject.getBoolean("inCombat");
             String name = (String)nextObject.get("name");
             String description = (String)nextObject.get("descriptions");
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             int effectId = -1;
             if(nextObject.has("effect"))
             {
@@ -68,6 +86,7 @@ public class Item {
             }
             Item i = new Item(name, description, value, keyItem, useable, inCombat, id);
             i.effectId = effectId;
+            i.uniqueUserId = uuid;
             return i;
         }
         catch (JSONException e)
@@ -97,11 +116,12 @@ public class Item {
             stateObject.put("descriptions", description);
             stateObject.put("value", value);
             stateObject.put("keyItem", keyItem);
+            stateObject.put("uuid", uniqueUserId);
             if(effect != null) {
                 stateObject.put("effect", effect.getId());
             }
             stateObject.put("useable", useable);
-            stateObject.put("inCombat", inCombat);
+            stateObject.put("inCombat", onlyInCombat);
             stateObject.put("OBJECT TYPE", "Item");
             return stateObject;
         }
@@ -125,7 +145,7 @@ public class Item {
         id = GameController.getId();
         effect = null;
         useable = false;
-        inCombat = false;
+        onlyInCombat = false;
     }
 
     public Item(String nam, String desc, int val, boolean key, boolean usea, boolean inComb, Effect e)
@@ -136,7 +156,7 @@ public class Item {
         keyItem = key;
         id = GameController.getId();
         useable = usea;
-        inCombat = inComb;
+        onlyInCombat = inComb;
         effect = e;
     }
     public Item(String nam, String desc, int val, boolean key, boolean usea, boolean inComb, int i)
@@ -147,7 +167,7 @@ public class Item {
         keyItem = key;
         id = i;
         useable = usea;
-        inCombat = inComb;
+        onlyInCombat = inComb;
     }
 
     public void drop()
@@ -195,7 +215,7 @@ public class Item {
         return keyItem;
     }
 
-    public boolean combatOnly() { return inCombat; }
+    public boolean combatOnly() { return onlyInCombat; }
 
     public boolean isUseable() { return useable; }
 

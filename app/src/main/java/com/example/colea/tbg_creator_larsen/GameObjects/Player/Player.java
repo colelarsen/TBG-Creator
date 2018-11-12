@@ -14,15 +14,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Player implements CombatTracker{
-    private static Player p = new Player(15, 20, "Cole");
+    private static Player p = null;
 
     private int health;
-    private int maxHealth;
+    public int maxHealth;
     public String name;
-    private int defenceScore = 0;
-    private int attackScore = 0;
-    private Weapon equippedWeapon;
-    private Equipment equippedArmor;
+    public int defenceScore = 0;
+    public int attackScore = 0;
+    public Weapon equippedWeapon;
+    public Equipment equippedArmor;
     public ArrayList<Effect> spells = new ArrayList<>();
     public Inventory inventory;
 
@@ -181,6 +181,37 @@ public class Player implements CombatTracker{
         Player.getPlayer().defenceScore = i;
     }
 
+    public void equipWeaponPerPlayer(Weapon w)
+    {
+        if(equippedWeapon != null) {
+            equippedWeapon.setIsEqu(false);
+            attackScore = attackScore - equippedWeapon.getAttack();
+            equippedWeapon = w;
+            attackScore = attackScore + equippedWeapon.getAttack();
+        }
+        else
+        {
+            equippedWeapon = w;
+            attackScore = attackScore + equippedWeapon.getAttack();
+        }
+    }
+
+    public void equipArmorPerPlayer(Equipment e)
+    {
+        if(equippedArmor != null) {
+            equippedArmor.setIsEqu(false);
+
+            defenceScore = defenceScore - equippedArmor.getDefence();
+            equippedArmor = e;
+            defenceScore = defenceScore + equippedArmor.getDefence();
+        }
+        else
+        {
+            equippedArmor = e;
+            defenceScore = defenceScore + equippedArmor.getDefence();
+        }
+    }
+
     public static void equipWeapon(Weapon w)
     {
         Player p = Player.getPlayer();
@@ -201,7 +232,7 @@ public class Player implements CombatTracker{
 
     public static void setHealth(int h)
     {
-        Player.getPlayer().health = Math.min(h, Player.getPlayer().maxHealth);
+        Player.getPlayer().health = Math.max(Math.min(h, Player.getPlayer().maxHealth), 0);
     }
 
     public static int getHealth()

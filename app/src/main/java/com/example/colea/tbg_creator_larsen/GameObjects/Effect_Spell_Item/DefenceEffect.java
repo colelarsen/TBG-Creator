@@ -10,11 +10,29 @@ import org.json.JSONObject;
 
 public class DefenceEffect extends Effect{
 
-    String name;
-    String description;
-    int defence = 0;
-    int id;
-    int duration;
+    public String uniqueUserId = "";
+    public String name;
+    public String description;
+    public int defence = 0;
+    public int id;
+    public int duration;
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
 
     public DefenceEffect(String nam, String desc, int def, int dur)
     {
@@ -47,7 +65,15 @@ public class DefenceEffect extends Effect{
             int id = nextObject.getInt("id");
             int defence = nextObject.getInt("defence");
             int duration = nextObject.getInt("duration");
-            return new DefenceEffect(name, description, defence, duration, id);
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+
+            DefenceEffect defenceEffect = new DefenceEffect(name, description, defence, duration, id);
+            defenceEffect.uniqueUserId = uuid;
+            return defenceEffect;
         }
         catch(JSONException e)
         {
@@ -67,6 +93,7 @@ public class DefenceEffect extends Effect{
             stateObject.put("description", description);
             stateObject.put("defence", defence);
             stateObject.put("duration", duration);
+            stateObject.put("uuid", uniqueUserId);
             return stateObject;
         }
         catch(JSONException e)

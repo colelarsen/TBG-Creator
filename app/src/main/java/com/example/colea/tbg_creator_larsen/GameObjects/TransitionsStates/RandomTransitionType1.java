@@ -16,13 +16,18 @@ public class RandomTransitionType1 extends Transition {
 
     //TYPE 1 OF RANDOM
 
-    private String displayString;
-    private Conditional conditional;
-    private ArrayList<Transition> transitions;
+    public String displayString;
+    public Conditional conditional;
+    public ArrayList<Transition> transitions;
     private ArrayList<Double> lowChance = new ArrayList<>();
     private ArrayList<Double> highChance = new ArrayList<>();
     public int id;
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
 
     public RandomTransitionType1(String displayVal, ArrayList<Transition> transitio)
     {
@@ -78,7 +83,6 @@ public class RandomTransitionType1 extends Transition {
         lowChance = lowCha;
         highChance = highCha;
         condId = condI;
-
     }
 
     public void link(GameObjects gameObjects)
@@ -101,6 +105,11 @@ public class RandomTransitionType1 extends Transition {
         try {
             int id = nextObject.getInt("id");
             String displayString = nextObject.getString("displayString");
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             int condId = -1;
             if(nextObject.has("conditional"))
             {
@@ -127,7 +136,9 @@ public class RandomTransitionType1 extends Transition {
             {
                 highChance.add(highChanceJSON.getDouble(i));
             }
-            return new RandomTransitionType1(displayString, transIds, lowChance, highChance, condId, id);
+            RandomTransitionType1 randomTransitionType1 = new RandomTransitionType1(displayString, transIds, lowChance, highChance, condId, id);
+            randomTransitionType1.uniqueUserId = uuid;
+            return randomTransitionType1;
 
         }
         catch(JSONException e)
@@ -144,6 +155,7 @@ public class RandomTransitionType1 extends Transition {
             JSONObject stateObject = new JSONObject();
             stateObject.put("OBJECT TYPE", "RandomTransitionType1");
             stateObject.put("displayString", displayString);
+            stateObject.put("uuid", uniqueUserId);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }

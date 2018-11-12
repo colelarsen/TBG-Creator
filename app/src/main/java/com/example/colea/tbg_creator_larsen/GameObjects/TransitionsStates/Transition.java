@@ -17,6 +17,8 @@ public abstract class Transition {
 
     public abstract String getDisplayString();
 
+    public abstract String getUniqueUserId();
+
     public abstract String getTransitionString();
 
     public abstract void setConditional(Conditional cond);

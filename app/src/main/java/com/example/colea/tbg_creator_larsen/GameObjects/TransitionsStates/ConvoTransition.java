@@ -7,6 +7,7 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Activities.TestActivity;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.Conditional;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.Enemy;
 import com.example.colea.tbg_creator_larsen.GameObjects.NPC;
 
@@ -17,14 +18,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ConvoTransition extends Transition {
-    private String displayString;
-    private String transitionString;
-    private State toTrans;
-    private Conditional conditional;
-    private NPC npc;
+    public String displayString;
+    public String transitionString;
+    public State toTrans;
+    public Conditional conditional;
+    public NPC npc;
     public int id;
-    private ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
     public int getId()
     {
         return id;
@@ -78,6 +84,12 @@ public class ConvoTransition extends Transition {
             int id = nextObject.getInt("id");
             String displayString = nextObject.getString("displayString");
             String transitionString = nextObject.getString("transitionString");
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+
             int toTransId = -1;
             if(nextObject.has("toTrans"))
             {
@@ -102,8 +114,9 @@ public class ConvoTransition extends Transition {
             {
                 npcId = nextObject.getInt("npc");
             }
-
-            return new ConvoTransition(displayString, transitionString, npcId, id, toTransId, condId, chainIds);
+            ConvoTransition conversationTransition = new ConvoTransition(displayString, transitionString, npcId, id, toTransId, condId, chainIds);
+            conversationTransition.uniqueUserId = uuid;
+            return conversationTransition;
         }
         catch(JSONException e)
         {
@@ -128,6 +141,7 @@ public class ConvoTransition extends Transition {
             stateObject.put("OBJECT TYPE", "ConvoTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
+            stateObject.put("uuid", uniqueUserId);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }

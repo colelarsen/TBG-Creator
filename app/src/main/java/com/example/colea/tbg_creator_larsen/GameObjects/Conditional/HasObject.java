@@ -11,11 +11,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class HasObject extends Conditional {
-    private String object;
-    private Conditional or;
-    private Conditional and;
-    private int id;
-    private boolean not = false;
+    public String object;
+    public Conditional or;
+    public Conditional and;
+    public int id;
+    public boolean not = false;
+    public String uniqueUserId = "";
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
 
     public HasObject()
     {
@@ -61,8 +79,15 @@ public class HasObject extends Conditional {
             {
                 andId = nextObject.getInt("and");
             }
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             boolean not = nextObject.getBoolean("not");
-            return new HasObject(id, object, andId, orId, not);
+            HasObject hasObject = new HasObject(id, object, andId, orId, not);
+            hasObject.uniqueUserId = uuid;
+            return hasObject;
         }
         catch(JSONException e)
         {
@@ -87,6 +112,7 @@ public class HasObject extends Conditional {
 
             stateObject.put("id", id);
             stateObject.put("OBJECT TYPE", "HasObject");
+            stateObject.put("uuid", uniqueUserId);
 
             stateObject.put("object", object);
             if(or != null) {

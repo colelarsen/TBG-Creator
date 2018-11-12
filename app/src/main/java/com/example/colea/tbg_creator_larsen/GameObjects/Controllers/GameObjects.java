@@ -469,4 +469,11 @@ public class GameObjects {
         MainAppController.saveFile(view.getContext(), toStringFromJSON(), gameName);
     }
 
+    public void deleteState(State state)
+    {
+        states.remove(state);
+        //@TODO For every transition remove the state
+        //Do this for all object types
+    }
+
 }

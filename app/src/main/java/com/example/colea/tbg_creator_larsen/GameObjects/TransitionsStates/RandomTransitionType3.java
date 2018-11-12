@@ -15,14 +15,19 @@ public class RandomTransitionType3 extends Transition {
 
     //TYPE 3
 
-    private Conditional conditional;
-    private ArrayList<Transition> transitions;
-    private ArrayList<Double> lowChance = new ArrayList<>();
-    private ArrayList<Double> highChance = new ArrayList<>();
-    private String displayString;
-    private State goingTo;
+    public Conditional conditional;
+    public ArrayList<Transition> transitions;
+    public ArrayList<Double> lowChance = new ArrayList<>();
+    public ArrayList<Double> highChance = new ArrayList<>();
+    public String displayString;
+    public State goingTo;
     public int id;
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
     public RandomTransitionType3(String displayStrin, ArrayList<Transition> transitio)
     {
         id = GameController.getId();
@@ -102,6 +107,12 @@ public class RandomTransitionType3 extends Transition {
                 transId = nextObject.getInt("goingTo");
             }
 
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+
             JSONArray transIdsJSON = nextObject.getJSONArray("transitions");
             ArrayList<Integer> transIds = new ArrayList<>();
             for(int i = 0; i < transIdsJSON.length(); i++)
@@ -122,7 +133,9 @@ public class RandomTransitionType3 extends Transition {
             {
                 highChance.add(highChanceJSON.getDouble(i));
             }
-            return new RandomTransitionType3(displayString, transIds, lowChance, highChance, condId, transId, id);
+            RandomTransitionType3 randomTransitionType3 = new RandomTransitionType3(displayString, transIds, lowChance, highChance, condId, transId, id);
+            randomTransitionType3.uniqueUserId = uuid;
+            return randomTransitionType3;
         }
         catch(JSONException e)
         {
@@ -138,6 +151,7 @@ public class RandomTransitionType3 extends Transition {
             JSONObject stateObject = new JSONObject();
             stateObject.put("OBJECT TYPE", "RandomTransitionType3");
             stateObject.put("displayString", displayString);
+            stateObject.put("uuid", uniqueUserId);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }

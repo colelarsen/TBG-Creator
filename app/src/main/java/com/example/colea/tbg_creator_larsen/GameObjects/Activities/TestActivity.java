@@ -113,6 +113,7 @@ public class TestActivity extends AppCompatActivity {
 
     public void onQuitClick(View view)
     {
+        GameController.effects.clear();
         super.onBackPressed();
     }
 
@@ -138,7 +139,7 @@ public class TestActivity extends AppCompatActivity {
 
     public void disableButtons()
     {
-        int[] ids = {R.id.op0, R.id.op1, R.id.op2, R.id.op3, R.id.op4, R.id.op5, R.id.op6, R.id.op7, R.id.player_info_button};
+        int[] ids = {R.id.op0, R.id.op1, R.id.op2, R.id.op3, R.id.op4, R.id.op5, R.id.op6, R.id.op7, R.id.player_info_button, R.id.player_saveQuit};
         for(int id : ids)
         {
             Button b = findViewById(id);
@@ -149,7 +150,7 @@ public class TestActivity extends AppCompatActivity {
 
     public void enableButtons()
     {
-        int[] ids = {R.id.op0, R.id.op1, R.id.op2, R.id.op3, R.id.op4, R.id.op5, R.id.op6, R.id.op7, R.id.player_info_button};
+        int[] ids = {R.id.player_saveQuit, R.id.op0, R.id.op1, R.id.op2, R.id.op3, R.id.op4, R.id.op5, R.id.op6, R.id.op7, R.id.player_info_button};
         for(int id : ids)
         {
             Button b = findViewById(id);

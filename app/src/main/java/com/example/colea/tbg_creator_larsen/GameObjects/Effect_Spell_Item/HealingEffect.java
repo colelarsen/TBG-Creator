@@ -10,10 +10,28 @@ import org.json.JSONObject;
 
 public class HealingEffect extends Effect{
 
-    String name;
-    String description;
-    int healing = 0;
-    int id;
+    public String uniqueUserId = "";
+    public String name;
+    public String description;
+    public int healing = 0;
+    public int id;
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
 
     public HealingEffect(String nam, String desc, int heal)
     {
@@ -43,7 +61,14 @@ public class HealingEffect extends Effect{
             String description = (String) nextObject.get("description");
             int id = nextObject.getInt("id");
             int healing = nextObject.getInt("healing");
-            return new HealingEffect(name, description, healing, id);
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+            HealingEffect healingEffect =  new HealingEffect(name, description, healing, id);
+            healingEffect.uniqueUserId = uuid;
+            return healingEffect;
         }
         catch(JSONException e)
         {
@@ -61,6 +86,7 @@ public class HealingEffect extends Effect{
             stateObject.put("name", name);
             stateObject.put("description", description);
             stateObject.put("healing", healing);
+            stateObject.put("uuid", uniqueUserId);
             return stateObject;
         }
         catch(JSONException e)

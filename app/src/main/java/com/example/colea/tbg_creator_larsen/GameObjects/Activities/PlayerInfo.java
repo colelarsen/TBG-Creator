@@ -135,6 +135,8 @@ public class PlayerInfo extends AppCompatActivity {
             inventoryRows.removeAllViews();
 
             Inventory i = Player.getPlayer().inventory;
+            boolean alreadyWeapon = false;
+            boolean alreadyEquip = false;
             for (Item it : i.getItems())
             {
                 LinearLayout inventoryColumns = new LinearLayout(getContext());
@@ -168,19 +170,36 @@ public class PlayerInfo extends AppCompatActivity {
 
                 if(it.isWeapon() || it.isEquipment())
                 {
+
                     Button b = new Button(getContext());
 
                     b.setWidth(b.getWidth() / 2);
                     b.setHeight(b.getHeight() / 2);
-                    if(it.isEquipped())
+
+                    if(it.isWeapon())
                     {
-                        b.setText("Unequip");
+                        if(it.isEquipped() && !alreadyWeapon)
+                        {
+                            b.setText("Unequip");
+                            alreadyWeapon = true;
+                        }
+                        else
+                        {
+                            b.setText("Equip");
+                        }
                     }
                     else
                     {
-                        b.setText("Equip");
+                        if(it.isEquipped() && !alreadyEquip)
+                        {
+                            b.setText("Unequip");
+                            alreadyEquip = true;
+                        }
+                        else
+                        {
+                            b.setText("Equip");
+                        }
                     }
-
                     b.setOnClickListener(this);
                     b.setTag("" + it.getId() + ",Equip");
                     inventoryColumns.addView(b);
@@ -193,7 +212,7 @@ public class PlayerInfo extends AppCompatActivity {
                     b.setHeight(b.getHeight() / 2);
                     b.setText("Use on Self");
                     b.setOnClickListener(this);
-                    b.setTag("" + it.getEffect().getId() + ",Effect");
+                    b.setTag("" + it.getEffect().getId() + ",Effect," + it.getId());
                     inventoryColumns.addView(b);
                 }
                 inventoryRows.addView(inventoryColumns);
@@ -206,7 +225,6 @@ public class PlayerInfo extends AppCompatActivity {
 
             String itemString = (String) v.getTag();
             String[] itemData = itemString.split(",");
-
             int itemNum = Integer.parseInt(itemData[0]);
 
             switch (itemData[1])
@@ -238,6 +256,13 @@ public class PlayerInfo extends AppCompatActivity {
                     if(ef != null)
                     {
                         Player.getPlayer().applyEffect(ef);
+                    }
+
+
+                    if(itemData.length > 2) {
+                        itemNum = Integer.parseInt(itemData[2]);
+                        Item item = Player.getPlayer().inventory.findItemById(itemNum);
+                        item.drop();
                     }
                     break;
                     }

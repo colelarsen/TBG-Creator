@@ -13,13 +13,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SwitchLeverTransition extends Transition {
-    private String displayString;
-    private String transitionString;
-    private State toTrans;
-    private Conditional conditional;
-    private String switc;
+    public String displayString;
+    public String transitionString;
+    public State toTrans;
+    public Conditional conditional;
+    public String switc;
     public int id;
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
     public SwitchLeverTransition(String displayVal, String transVal, String swit)
     {
         displayString = displayVal;
@@ -65,6 +70,11 @@ public class SwitchLeverTransition extends Transition {
                 toTransId = nextObject.getInt("toTrans");
             }
             int condId = -1;
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             if(nextObject.has("conditional"))
             {
                 condId = nextObject.getInt("conditional");
@@ -79,7 +89,9 @@ public class SwitchLeverTransition extends Transition {
 
             String switc = nextObject.getString("switc");
             /////ALL TRANSITIONS SHOULD HAVE THIS////////////
-            return new SwitchLeverTransition(displayString, transitionString, switc, condId, toTransId, id, chainIds);
+            SwitchLeverTransition switchLeverTransition = new SwitchLeverTransition(displayString, transitionString, switc, condId, toTransId, id, chainIds);
+            switchLeverTransition.uniqueUserId = uuid;
+            return switchLeverTransition;
 
         }
         catch(JSONException e)
@@ -97,6 +109,8 @@ public class SwitchLeverTransition extends Transition {
             stateObject.put("OBJECT TYPE", "SwitchLeverTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
+            stateObject.put("uuid", uniqueUserId);
+
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }
@@ -166,7 +180,7 @@ public class SwitchLeverTransition extends Transition {
             return true;
     }
 
-    private ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public ArrayList<Transition> chainTransitions = new ArrayList<>();
     @Override
     public void addChain(Transition t) {
         if(!t.hasChain()) {

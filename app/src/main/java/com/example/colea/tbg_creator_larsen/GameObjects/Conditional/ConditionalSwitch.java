@@ -11,18 +11,37 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ConditionalSwitch extends Conditional {
-    private static ArrayList<String> switches = new ArrayList<>();
-    private static ArrayList<Boolean> switchesValue = new ArrayList<>();
-    private Conditional or;
-    private Conditional and;
-    private String singleSwitch;
-    private int id;
-    private boolean not = false;
+    public static ArrayList<String> switches = new ArrayList<>();
+    public static ArrayList<Boolean> switchesValue = new ArrayList<>();
+
+
+    public Conditional or;
+    public Conditional and;
+    public String singleSwitch;
+    public int id;
+    public boolean not = false;
+    public String uniqueUserId = "";
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
+
 
     public int conditionalOrId = -1;
     public int conditionalAndId = -1;
-
-
     public ConditionalSwitch(boolean starting, String obj1, Conditional an, Conditional o)
     {
         singleSwitch = obj1;
@@ -63,6 +82,11 @@ public class ConditionalSwitch extends Conditional {
             String singleSwitch = nextObject.getString("singleSwitch");
             int orId = -1;
             int andId = -1;
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             if(nextObject.has("or"))
             {
                 orId = nextObject.getInt("or");
@@ -77,7 +101,8 @@ public class ConditionalSwitch extends Conditional {
             {
                 JSONArray switc = nextObject.getJSONArray("switches");
                 switches = new ArrayList<>();
-                for (int i = 0; i < switc.length(); i++) {
+                for (int i = 0; i < switc.length(); i++)
+                {
                     switches.add(switc.getString(i));
                 }
             }
@@ -90,8 +115,9 @@ public class ConditionalSwitch extends Conditional {
                     switchesValue.add(switc.getBoolean(i));
                 }
             }
-
-            return new ConditionalSwitch(singleSwitch, andId, orId, not, id);
+            ConditionalSwitch conditionalSwitch = new ConditionalSwitch(singleSwitch, andId, orId, not, id);
+            conditionalSwitch.uniqueUserId = uuid;
+            return conditionalSwitch;
         }
         catch(JSONException e)
         {
@@ -121,6 +147,7 @@ public class ConditionalSwitch extends Conditional {
             if(and != null) {
                 stateObject.put("and", and.getId());
             }
+            stateObject.put("uuid", uniqueUserId);
             stateObject.put("not", not);
             stateObject.put("singleSwitch", singleSwitch);
             stateObject.put("OBJECT TYPE", "ConditionalSwitch");
@@ -169,6 +196,19 @@ public class ConditionalSwitch extends Conditional {
                 switchesValue.set(i, Boolean.valueOf(value));
             }
         }
+    }
+
+    public static boolean isOn(String x)
+    {
+        for(int i = 0; i < switches.size(); i++)
+        {
+            String s = switches.get(i);
+            if(x.compareTo(s) == 0)
+            {
+                return switchesValue.get(i).booleanValue();
+            }
+        }
+        return false;
     }
 
     public void not()

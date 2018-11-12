@@ -12,12 +12,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class OneTimeTransition extends Transition {
-    private String displayString;
-    private String transitionString;
-    private State toTrans;
-    private Conditional conditional;
-    private boolean goneYet = false;
+    public String displayString;
+    public String transitionString;
+    public State toTrans;
+    public Conditional conditional;
+    public boolean goneYet = false;
     public int id;
+    public String uniqueUserId = "";
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
 
     public OneTimeTransition(String displayVal, String transVal)
     {
@@ -77,10 +82,17 @@ public class OneTimeTransition extends Transition {
             {
                 chainIds.add(chainIdJSONArray.getInt(i));
             }
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
 
             boolean goneYet = nextObject.getBoolean("goneYet");
             /////ALL TRANSITIONS SHOULD HAVE THIS////////////
-            return new OneTimeTransition(displayString, transitionString, id, condId, toTransId, goneYet, chainIds);
+            OneTimeTransition oneTimeTransition = new OneTimeTransition(displayString, transitionString, id, condId, toTransId, goneYet, chainIds);
+            oneTimeTransition.uniqueUserId = uuid;
+            return oneTimeTransition;
 
         }
         catch(JSONException e)
@@ -106,6 +118,7 @@ public class OneTimeTransition extends Transition {
             stateObject.put("OBJECT TYPE", "OneTimeTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
+            stateObject.put("uuid", uniqueUserId);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }
@@ -183,7 +196,7 @@ public class OneTimeTransition extends Transition {
         return false;
     }
 
-    private ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public ArrayList<Transition> chainTransitions = new ArrayList<>();
     @Override
     public void addChain(Transition t) {
         if(!t.hasChain()) {

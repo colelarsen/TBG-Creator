@@ -20,15 +20,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class CombatTransition extends Transition {
-    private String displayString;
-    private String transitionString;
-    private State toTrans;
-    private Conditional conditional;
-    private Enemy[] enemies;
-    private ArrayList<Transition> chainTransitions = new ArrayList<>();
-    private boolean oneTimeCombat = false;
-    private boolean alreadyHappened = false;
+    public String displayString;
+    public String transitionString;
+    public State toTrans;
+    public Conditional conditional;
+    public Enemy[] enemies;
+    public ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public boolean oneTimeCombat = false;
+    public boolean alreadyHappened = false;
     public int id;
+    public String uniqueUserId = "";
+
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
 
     public CombatTransition(String displayVal, String transVal, Enemy[] enemis)
     {
@@ -193,6 +199,11 @@ public class CombatTransition extends Transition {
             String displayString = nextObject.getString("displayString");
             String transitionString = nextObject.getString("transitionString");
             int toTransId = -1;
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             if(nextObject.has("toTrans"))
             {
                 toTransId = nextObject.getInt("toTrans");
@@ -218,11 +229,11 @@ public class CombatTransition extends Transition {
             {
                 enemyIds[i] = enemyIdsJSON.getInt(i);
             }
-
             boolean oneTimeCombat = nextObject.getBoolean("oneTimeCombat");
             boolean alreadyHappened = nextObject.getBoolean("alreadyHappened");
-
-            return new CombatTransition(displayString, transitionString, id, enemyIds, toTransId, condId, alreadyHappened, oneTimeCombat, chainIds);
+            CombatTransition combatTransition = new CombatTransition(displayString, transitionString, id, enemyIds, toTransId, condId, alreadyHappened, oneTimeCombat, chainIds);
+            combatTransition.uniqueUserId = uuid;
+            return combatTransition;
         }
         catch(JSONException e)
         {
@@ -247,6 +258,7 @@ public class CombatTransition extends Transition {
          */
         try {
             JSONObject stateObject = new JSONObject();
+            stateObject.put("uuid", uniqueUserId);
             stateObject.put("OBJECT TYPE", "CombatTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);

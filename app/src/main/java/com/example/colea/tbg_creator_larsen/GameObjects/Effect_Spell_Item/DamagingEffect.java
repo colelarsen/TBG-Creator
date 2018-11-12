@@ -12,10 +12,28 @@ import org.json.JSONObject;
 
 public class DamagingEffect extends Effect{
 
-    String name;
-    String description;
-    int damage = 0;
-    int id;
+    public String uniqueUserId = "";
+    public String name;
+    public String description;
+    public int damage = 0;
+    public int id;
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
 
     public DamagingEffect(String nam, String desc, int dam)
     {
@@ -44,7 +62,14 @@ public class DamagingEffect extends Effect{
             String description = (String) nextObject.get("description");
             int id = nextObject.getInt("id");
             int damage = nextObject.getInt("damage");
-            return new DamagingEffect(name, description, damage, id);
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+            DamagingEffect damagingEffect = new DamagingEffect(name, description, damage, id);
+            damagingEffect.uniqueUserId = uuid;
+            return damagingEffect;
         }
         catch(JSONException e)
         {
@@ -63,6 +88,7 @@ public class DamagingEffect extends Effect{
             stateObject.put("name", name);
             stateObject.put("description", description);
             stateObject.put("damage", damage);
+            stateObject.put("uuid", uniqueUserId);
             return stateObject;
         }
         catch(JSONException e)

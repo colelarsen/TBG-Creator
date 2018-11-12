@@ -12,6 +12,24 @@ public class TestConditional extends Conditional {
     private Conditional and;
     private int id;
     private boolean not = false;
+    public String uniqueUserId = "";
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
 
     @Override
     public void link(GameObjects gameObjects) {

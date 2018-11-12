@@ -8,13 +8,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Weapon extends Item {
-    private int id;
-    private int value;
-    private String name;
-    private String description;
-    private boolean keyItem;
-    private int attack;
-    private boolean isEqu = false;
+    public int id;
+    public int value;
+    public String name;
+    public String description;
+    public boolean keyItem;
+    public int attack;
+    public boolean isEqu = false;
+
+    public String uniqueUserId = "";
+    public String getUniqueUserId()
+    {
+        if(!uniqueUserId.isEmpty()) {
+            return uniqueUserId;
+        }
+        else
+        {
+            return "" + id;
+        }
+    }
 
     @Override
     public void link(GameObjects gameObjects)
@@ -35,12 +47,24 @@ public class Weapon extends Item {
 
         try {
             int id = nextObject.getInt("id");
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             int value = nextObject.getInt("value");
             boolean keyItem = nextObject.getBoolean("keyItem");
             String name = (String)nextObject.get("name");
             String description = (String)nextObject.get("descriptions");
             int attack = nextObject.getInt("attack");
+            boolean equipped = false;
+            if(nextObject.has("equipped"))
+            {
+                equipped = nextObject.getBoolean("equipped");
+            }
             Weapon w = new Weapon(name, description, value, keyItem, attack, id);
+            w.isEqu = equipped;
+            w.uniqueUserId = uuid;
             return w;
         }
         catch (JSONException e)
@@ -69,7 +93,9 @@ public class Weapon extends Item {
             stateObject.put("value", value);
             stateObject.put("keyItem", keyItem);
             stateObject.put("attack", attack);
+            stateObject.put("equipped", isEqu);
             stateObject.put("OBJECT TYPE", "Weapon");
+            stateObject.put("uuid", uniqueUserId);
             return stateObject;
         }
         catch(JSONException e)
@@ -79,6 +105,11 @@ public class Weapon extends Item {
 
 
         return null;
+
+    }
+
+    public Weapon()
+    {
 
     }
 

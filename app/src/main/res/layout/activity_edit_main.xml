@@ -26,13 +26,57 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.7"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
+
+                <TextView
+                    android:id="@+id/playerDropDownMaybe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:text="Player"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/EditPlayerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:onClick="onPlayerEdit"
+                    android:text="Edit" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stateDrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
+
+                <TextView
                     android:id="@+id/statesDropDown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   States"
+                    android:text="States"
                     android:textSize="24sp" />
 
                 <TextView
@@ -48,9 +92,20 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/transDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
 
                 <TextView
                     android:id="@+id/transitionsDropDown"
@@ -59,7 +114,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Transitions"
+                    android:text="Transitions"
                     android:textSize="24sp" />
 
                 <TextView
@@ -75,9 +130,20 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/itemsDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
 
                 <TextView
                     android:id="@+id/itemsDropDown"
@@ -86,7 +152,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Items"
+                    android:text="Items"
                     android:textSize="24sp" />
 
                 <TextView
@@ -102,10 +168,21 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/effectsDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
 
                 <TextView
                     android:id="@+id/effectsDropDown"
@@ -114,7 +191,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Effects"
+                    android:text="Effects"
                     android:textSize="24sp" />
 
                 <TextView
@@ -130,10 +207,21 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/condsDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
 
                 <TextView
                     android:id="@+id/conditionalsDropDown"
@@ -142,7 +230,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Conditionals"
+                    android:text="Conditionals"
                     android:textSize="24sp" />
 
                 <TextView
@@ -158,10 +246,21 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/enemiesDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
 
                 <TextView
                     android:id="@+id/enemiesDropDown"
@@ -170,7 +269,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Enemies"
+                    android:text="Enemies"
                     android:textSize="24sp" />
 
                 <TextView
@@ -186,10 +285,60 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/NPCDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
+
+                <TextView
+                    android:id="@+id/NPCDropDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:text="NPCs"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/addNPC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="onAddClick"
+                    android:text="                    +"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/convoDrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
 
                 <TextView
                     android:id="@+id/conversationStatesDropDown"
@@ -198,45 +347,56 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Conversation States"
+                    android:text="Conversation States"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/addConvoState"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5.2"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onAddClick"
-                    android:text="+"
+                    android:text="                    +"
                     android:textSize="24sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/convoTransDrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clickable="true"
+                    android:onClick="onDropDownClick"
+                    android:textSize="24sp"
+                    tools:text="   " />
+
+                <TextView
                     android:id="@+id/conversationTransitionsDropDown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
-                    android:text="   Conversation Transitions"
+                    android:text="Conversation Transitions"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/addConvoTransition"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7.5"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onAddClick"
-                    android:text="   +"
+                    android:text="                    +"
                     android:textSize="24sp" />
 
             </LinearLayout>
@@ -250,4 +410,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

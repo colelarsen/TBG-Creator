@@ -40,9 +40,18 @@ public class Inventory {
     public void drop(int itemId)
     {
         Inventory i = new Inventory();
+        boolean alreadyDropped = false;
         for(Item item : items)
         {
             if(item.getId() != itemId)
+            {
+                i.items.add(item);
+            }
+            else if(!alreadyDropped)
+            {
+                alreadyDropped = true;
+            }
+            else if(alreadyDropped)
             {
                 i.items.add(item);
             }

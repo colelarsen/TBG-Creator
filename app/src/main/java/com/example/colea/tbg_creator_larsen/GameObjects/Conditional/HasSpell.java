@@ -9,11 +9,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class HasSpell extends Conditional {
-    private String object;
-    private Conditional or;
-    private Conditional and;
-    private int id;
-    private boolean not = false;
+    public String object;
+    public Conditional or;
+    public Conditional and;
+    public int id;
+    public boolean not = false;
+    public String uniqueUserId = "";
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
+    }
 
     public JSONObject toJSON()
     {
@@ -27,6 +45,7 @@ public class HasSpell extends Conditional {
             */
             JSONObject stateObject = new JSONObject();
             stateObject.put("OBJECT TYPE", "HasSpell");
+            stateObject.put("uuid", uniqueUserId);
 
             stateObject.put("id", id);
             stateObject.put("object", object);
@@ -87,6 +106,11 @@ public class HasSpell extends Conditional {
             String object = nextObject.getString("object");
             int orId = -1;
             int andId = -1;
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             if(nextObject.has("or"))
             {
                 orId = nextObject.getInt("or");
@@ -96,7 +120,9 @@ public class HasSpell extends Conditional {
                 andId = nextObject.getInt("and");
             }
             boolean not = nextObject.getBoolean("not");
-            return new HasSpell(id, object, orId, andId, not);
+            HasSpell hasSpell = new HasSpell(id, object, orId, andId, not);
+            hasSpell.uniqueUserId = uuid;
+            return hasSpell;
         }
         catch(JSONException e)
         {
@@ -120,7 +146,9 @@ public class HasSpell extends Conditional {
         boolean ret = false;
         for(Effect spell : Player.getPlayer().spells)
         {
-            hasSpell = spell.getName().compareTo(object) == 0;
+            if(hasSpell == false) {
+                hasSpell = spell.getName().compareTo(object) == 0;
+            }
         }
 
         if(or != null)

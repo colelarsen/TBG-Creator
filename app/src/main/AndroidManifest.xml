@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/venture"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/venture"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".Activities.MainActivity">
@@ -26,7 +26,26 @@
         <activity android:name=".Activities.Conversation" />
         <activity android:name=".Activities.EnemyDropScreen" />
         <activity android:name=".Editing.EditMain" />
-        <activity android:name=".Editing.StateEditing"></activity>
+        <activity android:name=".Editing.StateEditing" />
+        <activity android:name=".Editing.NormalTransitionEditing" />
+        <activity android:name=".Editing.CombatTransitionEditing" />
+        <activity android:name=".Editing.ItemTransitionEditing" />
+        <activity android:name=".Editing.ConvoTransitionEditing" />
+        <activity android:name=".Editing.OneTimeTransitionEditing" />
+        <activity android:name=".Editing.RandomTransition1Editing" />
+        <activity android:name=".Editing.RandomTransition2Editing" />
+        <activity android:name=".Editing.RandomTransition3Editing" />
+        <activity android:name=".Editing.SwitchLeverTransitionEditing" />
+        <activity android:name=".Editing.PlayerEditing" />
+        <activity android:name=".Editing.ItemEditing" />
+        <activity android:name=".Editing.WeaponEditing" />
+        <activity android:name=".Editing.EquipmentEditing" />
+        <activity android:name=".Editing.DamagingEffectEditing" />
+        <activity android:name=".Editing.DefenceEffectEditing" />
+        <activity android:name=".Editing.HealingEffectEditing" />
+        <activity android:name=".Editing.ConditionalSwitchEditing" />
+        <activity android:name=".Editing.ConditionalHasObjectEdit" />
+        <activity android:name=".Editing.ConditionalHasSpellEditing"></activity>
     </application>
 
 </manifest>

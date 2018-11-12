@@ -13,6 +13,9 @@ abstract public class Effect {
     //Automatic Escape (Teleporting?)
     //Healing
 
+    public abstract String getUUID();
+
+    public abstract String getMainId();
 
     public abstract String getDescription();
 

@@ -36,6 +36,26 @@ public class Enemy implements CombatTracker, ConversationCharacter {
     public int id;
 
 
+    public static Enemy clone(Enemy e)
+    {
+        Enemy newEnemy = new Enemy();
+        newEnemy.name = e.name;
+        newEnemy.health = e.health;
+        newEnemy.maxHealth = e.maxHealth;
+        newEnemy.defenceScore = e.defenceScore;
+        newEnemy.attackScore = e.attackScore;
+        newEnemy.description = e.description;
+        newEnemy.equippedArmor = e.equippedArmor;
+        newEnemy.equippedWeapon = e.equippedWeapon;
+        newEnemy.drops = e.drops;
+        newEnemy.dropChance = e.dropChance;
+        newEnemy.canConverse = e.canConverse;
+        newEnemy.convoStart = e.convoStart;
+        newEnemy.passState = e.passState;
+        newEnemy.isPassive = e.isPassive;
+        return newEnemy;
+    }
+
     //public ArrayList<Spell> spells = new ArrayList<Spell>();
     //public ArrayList<Skill> skills = new ArrayList<Skill>();
 

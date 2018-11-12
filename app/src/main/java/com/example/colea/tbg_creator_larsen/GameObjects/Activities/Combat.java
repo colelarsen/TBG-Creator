@@ -67,6 +67,19 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
 
     private void startCombat()
     {
+        for(int i = 0; i < enemies.length; i++)
+        {
+            for(int j = 0; j < enemies.length; j++)
+            {
+                if(i != j)
+                {
+                    if(enemies[i] == enemies[j])
+                    {
+                        enemies[i] = Enemy.clone(enemies[i]);
+                    }
+                }
+            }
+        }
         Player.getPlayer().combatStart();
         for(Enemy en : enemies)
         {
@@ -253,7 +266,7 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
             String itemName = item.getTitle().toString();
             Item i = Player.getPlayer().inventory.findItemByName(itemName);
             Effect e = i.getEffect();
-            playerAction = Player.getPlayer().name + " Used Item," + e.getName() + "," + i.getName();
+            playerAction = Player.getPlayer().name + " Used Item," + e.getName() + "," + i.getName() + "," + i.getId();
             updateCombatInfo("Select Target");
             whatMenu = -1;
             return true;
@@ -324,6 +337,7 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
             else if(specifics[0].compareTo(Player.getPlayer().name + " Used Item") == 0)
             {
                 castEffect(Player.getPlayer(), GameController.getEffectByName(specifics[1]), specifics[2]);
+                Player.getPlayer().inventory.drop(Integer.parseInt(specifics[3]));
             }
             setUpCombatants(vi);
 
@@ -408,6 +422,7 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
             else if(specifics[0].compareTo(Player.getPlayer().name + " Used Item") == 0)
             {
                 castEffect(enemy, GameController.getEffectByName(specifics[1]), specifics[2]);
+                Player.getPlayer().inventory.drop(Integer.parseInt(specifics[3]));
             }
             setUpCombatants(vi);
             playerAction = "";

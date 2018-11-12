@@ -93,8 +93,16 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
             if (!(trans instanceof TradingConversationTransition && currentNPC instanceof NPC)) {
                 updateText("You: " + trans.getDisplayString());
                 currentState = trans.getState();
-                updateText(currentNPC.getName() + ": " + currentState.getText());
-                updateButtons();
+                if(currentState != null) {
+                    updateText(currentNPC.getName() + ": " + currentState.getText());
+                    updateButtons();
+                }
+                else
+                {
+                    currentState = new ConversationState("");
+                    updateText(currentNPC.getName() + ": " + currentState.getText());
+                    updateButtons();
+                }
             } else if (trans instanceof TradingConversationTransition && currentNPC instanceof NPC) {
                 NPC vendor = (NPC) currentNPC;
                 if (vendor.canTrade) {

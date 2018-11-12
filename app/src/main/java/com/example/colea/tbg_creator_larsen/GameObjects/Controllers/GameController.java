@@ -18,7 +18,6 @@ public class GameController {
     public static ArrayList<State> stateChain = new ArrayList<>();
     public static ArrayList<Effect> effects = new ArrayList<>();
     private static int id = 0;
-
     public static int getId()
     {
         return id++;

@@ -14,12 +14,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class NormalTransition extends Transition {
-    private String displayString;
-    private String transitionString;
-    private State toTrans;
-    private Conditional conditional;
+    public String displayString;
+    public String transitionString;
+    public State toTrans;
+    public Conditional conditional;
     public int id;
+    public String uniqueUserId = "";
 
+    public String getUniqueUserId()
+    {
+        return (uniqueUserId.isEmpty())? ""+id : uniqueUserId;
+    }
     public NormalTransition(String displayVal, String transVal)
     {
         displayString = displayVal;
@@ -73,6 +78,11 @@ public class NormalTransition extends Transition {
             {
                 condId = nextObject.getInt("conditional");
             }
+            String userId = "";
+            if(nextObject.has("uuid"))
+            {
+                userId = nextObject.getString("uuid");
+            }
 
             JSONArray chainIdJSONArray = nextObject.getJSONArray("chainTransitions");
             ArrayList<Integer> chainIds = new ArrayList<>();
@@ -81,7 +91,9 @@ public class NormalTransition extends Transition {
                 chainIds.add(chainIdJSONArray.getInt(i));
             }
             /////ALL TRANSITIONS SHOULD HAVE THIS////////////
-            return new NormalTransition(displayString, transitionString, id, condId, toTransId, chainIds);
+            NormalTransition norm = new NormalTransition(displayString, transitionString, id, condId, toTransId, chainIds);
+            norm.uniqueUserId = userId;
+            return norm;
 
         }
         catch(JSONException e)
@@ -106,6 +118,7 @@ public class NormalTransition extends Transition {
             stateObject.put("OBJECT TYPE", "NormalTransition");
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
+            stateObject.put("uuid", uniqueUserId);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }
@@ -173,7 +186,7 @@ public class NormalTransition extends Transition {
             return true;
     }
 
-    private ArrayList<Transition> chainTransitions = new ArrayList<>();
+    public ArrayList<Transition> chainTransitions = new ArrayList<>();
     @Override
     public void addChain(Transition t) {
         if(!t.hasChain()) {

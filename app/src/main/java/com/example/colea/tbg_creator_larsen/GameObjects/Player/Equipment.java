@@ -8,13 +8,30 @@ import org.json.JSONObject;
 
 public class Equipment extends Item {
 
-    private int id;
-    private int value;
-    private String name;
-    private String description;
-    private boolean keyItem;
-    private int defence;
-    private boolean isEqu = false;
+    public int id;
+    public int value;
+    public String name;
+    public String description;
+    public boolean keyItem;
+    public int defence;
+    public boolean isEqu = false;
+    public String uniqueUserId = "";
+
+    public String getUniqueUserId()
+    {
+        if(!uniqueUserId.isEmpty()) {
+            return uniqueUserId;
+        }
+        else
+        {
+            return "" + id;
+        }
+    }
+
+    public Equipment()
+    {
+
+    }
 
     public Equipment(String nam, String desc, int val, boolean key, int def)
     {
@@ -57,10 +74,23 @@ public class Equipment extends Item {
             int id = nextObject.getInt("id");
             int value = nextObject.getInt("value");
             boolean keyItem = nextObject.getBoolean("keyItem");
+            boolean equipped = false;
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+            if(nextObject.has("equipped"))
+            {
+                equipped = nextObject.getBoolean("equipped");
+            }
+
             String name = (String)nextObject.get("name");
             String description = (String)nextObject.get("descriptions");
             int defence = nextObject.getInt("defence");
             Equipment e = new Equipment(name, description, value, keyItem, defence, id);
+            e.isEqu = equipped;
+            e.uniqueUserId = uuid;
             return e;
         }
         catch (JSONException e)
@@ -89,7 +119,9 @@ public class Equipment extends Item {
             stateObject.put("value", value);
             stateObject.put("keyItem", keyItem);
             stateObject.put("defence", defence);
+            stateObject.put("equipped", isEqu);
             stateObject.put("OBJECT TYPE", "Equipment");
+            stateObject.put("uuid", uniqueUserId);
             return stateObject;
         }
         catch(JSONException e)

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class MainAppController {
 
@@ -86,6 +87,11 @@ public class MainAppController {
                 saveGameName(context, s);
             }
         }
+    }
+
+    public static boolean stringIsInt(String s)
+    {
+        return s.matches("^[0-9]*$");
     }
 
     public static boolean nameExists(Context context, String name)
