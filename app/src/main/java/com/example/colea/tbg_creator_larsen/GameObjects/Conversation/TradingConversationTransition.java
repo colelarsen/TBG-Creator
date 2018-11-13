@@ -8,10 +8,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TradingConversationTransition extends ConversationTransition {
-    private String displayString;
-    private ConversationState toTrans;
-    private Conditional conditional;
+    public String displayString;
+    public ConversationState toTrans;
+    public Conditional conditional;
     public int id;
+
+    public String uniqueUserId = "";
+
+    @Override
+    public String getUUID() {
+        return uniqueUserId;
+    }
+
+    @Override
+    public String getEditMainId() {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        return uniqueUserId;
+    }
 
     public TradingConversationTransition(String displayVal)
     {
@@ -50,6 +66,11 @@ public class TradingConversationTransition extends ConversationTransition {
             }
             */
 
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
             int id = nextObject.getInt("id");
             String disString = nextObject.getString("displayString");
 
@@ -63,7 +84,9 @@ public class TradingConversationTransition extends ConversationTransition {
             {
                 condId = nextObject.getInt("conditional");
             }
-            return new TradingConversationTransition(disString, id, toTransId, condId);
+            TradingConversationTransition tradingConversationTransition = new TradingConversationTransition(disString, id, toTransId, condId);
+            tradingConversationTransition.uniqueUserId = uuid;
+            return tradingConversationTransition;
         }
         catch(JSONException e)
         {
@@ -79,6 +102,7 @@ public class TradingConversationTransition extends ConversationTransition {
             stateObject.put("OBJECT TYPE", "TradingConversationTransition");
             stateObject.put("id", id);
             stateObject.put("displayString", displayString);
+            stateObject.put("uuid", uniqueUserId);
             if(toTrans != null) {
                 stateObject.put("toTrans", toTrans.getId());
             }

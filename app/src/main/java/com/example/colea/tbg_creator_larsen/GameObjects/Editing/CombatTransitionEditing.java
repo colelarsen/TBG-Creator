@@ -65,7 +65,7 @@ public class CombatTransitionEditing extends AppCompatActivity implements PopupM
                 TextView text = new TextView(row.getContext());
                 text.setText("Chain " + (chains.getChildCount() - 1) + "          ");
                 TextView b = new TextView(row.getContext());
-                b.setText(""+t.getId());
+                b.setText(t.getUniqueUserId()+"@"+t.getId());
                 b.setOnClickListener(this);
                 b.setTag("chain");
                 row.addView(text);
@@ -83,7 +83,7 @@ public class CombatTransitionEditing extends AppCompatActivity implements PopupM
                     TextView text = new TextView(row.getContext());
                     text.setText("Enemy " + (i + 1) + "          ");
                     TextView b = new TextView(row.getContext());
-                    b.setText("" + enemies[i].getId());
+                    b.setText(enemies[i].uniqueUserId+ "@" + enemies[i].getId());
                     b.setOnClickListener(this);
                     b.setTag("enemy");
                     text.setTextSize(20);
@@ -151,8 +151,11 @@ public class CombatTransitionEditing extends AppCompatActivity implements PopupM
         {
             LinearLayout row = (LinearLayout)enemyList.getChildAt(i);
             TextView idText = (TextView)row.getChildAt(1);
-            if(idText.getText().toString().compareTo("N/A") != 0) {
-                Enemy enemy = (Enemy) EditMain.gameObjects.findObjectById(Integer.parseInt(idText.getText().toString()));
+
+            String enemyIdString = idText.getText().toString();
+            if(enemyIdString.compareTo("N/A") != 0) {
+                int id = Integer.parseInt(idText.getText().toString().split("@")[1]);
+                Enemy enemy = (Enemy) EditMain.gameObjects.findObjectById(id);
                 enemies[i-1] = enemy;
             }
         }
@@ -178,8 +181,8 @@ public class CombatTransitionEditing extends AppCompatActivity implements PopupM
 
         if(givenTransition == null)
         {
-            EditMain.gameObjects.transitions.add(x);
             x.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.transitions.add(x);
         }
         this.onBackPressed();
     }
@@ -296,7 +299,7 @@ public class CombatTransitionEditing extends AppCompatActivity implements PopupM
             ArrayList<Enemy> enemies = EditMain.gameObjects.enemies;
             popup.getMenu().add("N/A");
             for (Enemy t : enemies) {
-                String id = "" + t.getId();
+                String id = t.uniqueUserId + "@" + t.getId();
                 popup.getMenu().add(id);
             }
             lastClicked = (TextView) view;

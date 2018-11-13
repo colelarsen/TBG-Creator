@@ -95,8 +95,9 @@ public class EquipmentEditing extends AppCompatActivity implements LifecycleObse
         }
 
         if(givenWeapon == null) {
-            EditMain.gameObjects.items.add(newItem);
             newItem.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.items.add(newItem);
+
         }
         this.onBackPressed();
     }

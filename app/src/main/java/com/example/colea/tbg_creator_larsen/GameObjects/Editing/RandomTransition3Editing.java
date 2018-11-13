@@ -61,15 +61,7 @@ public class RandomTransition3Editing extends AppCompatActivity implements Popup
                 text.setText("Transition " + (randomChances.getChildCount() - 1) + "          ");
                 TextView b = new TextView(row.getContext());
 
-                String transId = t.getUniqueUserId();
-                if(MainAppController.stringIsInt(transId))
-                {
-                    b.setText("@" + transId);
-                }
-                else
-                {
-                    b.setText(transId + "@" + t.getId());
-                }
+                b.setText(t.getUniqueUserId()+"@"+t.getId());
 
                 b.setOnClickListener(this);
                 EditText chance = new EditText(row.getContext());
@@ -174,8 +166,9 @@ public class RandomTransition3Editing extends AppCompatActivity implements Popup
 
         if(givenTransition == null)
         {
-            EditMain.gameObjects.transitions.add(x);
             x.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.transitions.add(x);
+
         }
         else
         {

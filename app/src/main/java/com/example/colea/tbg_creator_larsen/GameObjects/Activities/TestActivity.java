@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
+import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.ConditionalSwitch;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.DamagingEffect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.DefenceEffect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.HealingEffect;
@@ -114,6 +115,7 @@ public class TestActivity extends AppCompatActivity {
     public void onQuitClick(View view)
     {
         GameController.effects.clear();
+        ConditionalSwitch.clearData();
         super.onBackPressed();
     }
 

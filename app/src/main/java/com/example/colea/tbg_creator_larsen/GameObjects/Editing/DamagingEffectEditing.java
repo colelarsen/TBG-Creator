@@ -85,8 +85,8 @@ public class DamagingEffectEditing extends AppCompatActivity implements Lifecycl
 
 
         if(givenEffect == null) {
-            EditMain.gameObjects.effects.add(newItem);
             newItem.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.effects.add(newItem);
         }
 
         this.onBackPressed();

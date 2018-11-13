@@ -10,11 +10,13 @@ import org.json.JSONObject;
 
 public class ConversationState {
 
-    private ConversationTransition[] transitions = new ConversationTransition[4];
-    private String text;
-    private int id;
+    public ConversationTransition[] transitions = new ConversationTransition[4];
+    public String text;
+    public int id;
+    public String uniqueUserId = "";
 
     private int[] transitionIds;
+
     public ConversationState(String desc) {
         text = desc;
         id = GameController.getId();
@@ -42,6 +44,11 @@ public class ConversationState {
             int id = nextObject.getInt("id");
             String text = nextObject.getString("text");
 
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
 
             int[] transIds = new int[4];
             JSONArray ids = nextObject.getJSONArray("transitions");
@@ -49,7 +56,9 @@ public class ConversationState {
             {
                 transIds[i] = ids.getInt(i);
             }
-            return new ConversationState(text, id, transIds);
+            ConversationState conversationState = new ConversationState(text, id, transIds);
+            conversationState.uniqueUserId = uuid;
+            return conversationState;
         }
         catch(JSONException e)
         {
@@ -65,7 +74,7 @@ public class ConversationState {
             stateObject.put("OBJECT TYPE", "ConversationState");
             stateObject.put("id", id);
             stateObject.put("text", text);
-
+            stateObject.put("uuid", uniqueUserId);
             JSONArray ids = new JSONArray();
             for(ConversationTransition t : transitions)
             {

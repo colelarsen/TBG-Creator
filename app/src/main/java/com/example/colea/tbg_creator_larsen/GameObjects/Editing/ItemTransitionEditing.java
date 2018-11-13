@@ -63,7 +63,7 @@ public class ItemTransitionEditing extends AppCompatActivity implements PopupMen
                 TextView text = new TextView(row.getContext());
                 text.setText("Chain " + (chains.getChildCount() - 1) + "          ");
                 TextView b = new TextView(row.getContext());
-                b.setText(""+t.getId());
+                b.setText(t.getUniqueUserId()+"@"+t.getId());
                 b.setOnClickListener(this);
                 b.setTag("chain");
                 row.addView(text);
@@ -181,8 +181,9 @@ public class ItemTransitionEditing extends AppCompatActivity implements PopupMen
 
         if(givenTransition == null)
         {
-            EditMain.gameObjects.transitions.add(x);
             x.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.transitions.add(x);
+
         }
         this.onBackPressed();
     }

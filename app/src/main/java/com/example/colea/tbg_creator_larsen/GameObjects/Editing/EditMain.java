@@ -15,8 +15,11 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.ConditionalS
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.HasObject;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.HasSpell;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ChangeBaseStateConversationTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationState;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationTransition;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.NormalConversationTransition;
+import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.TradingConversationTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.DamagingEffect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.DefenceEffect;
 import com.example.colea.tbg_creator_larsen.GameObjects.Effect_Spell_Item.Effect;
@@ -104,11 +107,26 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         }
         else if(view.getId() == findViewById(R.id.addEnemy).getId())
         {
-            //Add a new state to gameObjects somehow
+            startActivity(new Intent(view.getContext(), EnemyEditing.class));
+        }
+        else if(view.getId() == findViewById(R.id.addNPC).getId())
+        {
+            startActivity(new Intent(view.getContext(), NpcEditing.class));
+        }
+        else if(view.getId() == findViewById(R.id.addConvoState).getId())
+        {
+            startActivity(new Intent(view.getContext(), ConversationStateEditing.class));
         }
         else if(view.getId() == findViewById(R.id.addConvoTransition).getId())
         {
-            //Add a new state to gameObjects somehow
+            PopupMenu popup = new PopupMenu(this, view);
+            popup.setOnMenuItemClickListener(this);
+            popup.inflate(R.menu.spell_popup);
+            String[] transitionTypes = {"Change State Convo Transition", "Normal Convo Transition", "Trading Convo Transition"};
+            for (String s : transitionTypes) {
+                popup.getMenu().add(s);
+            }
+            popup.show();
         }
     }
 
@@ -275,6 +293,56 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
             startActivity(new Intent(view.getContext(), ConditionalHasSpellEditing.class));
             transTextView.callOnClick();
         }
+        else if(tags[0].compareTo("Enemy") == 0)
+        {
+            int id = Integer.parseInt(tags[2]);
+            EnemyEditing.givenEnemy = (Enemy) gameObjects.findObjectById(id);
+            TextView transTextView = findViewById(R.id.enemiesDropDown);
+            startActivity(new Intent(view.getContext(), EnemyEditing.class));
+            transTextView.callOnClick();
+        }
+        else if(tags[0].compareTo("NPC") == 0)
+        {
+            int id = Integer.parseInt(tags[2]);
+            NpcEditing.givenNPC = (NPC) gameObjects.findObjectById(id);
+            TextView transTextView = findViewById(R.id.NPCDropDown);
+            startActivity(new Intent(view.getContext(), NpcEditing.class));
+            transTextView.callOnClick();
+        }
+        else if(tags[0].compareTo("ConversationState") == 0)
+        {
+            int id = Integer.parseInt(tags[2]);
+            ConversationStateEditing.givenState = (ConversationState) gameObjects.findObjectById(id);
+            TextView transTextView = findViewById(R.id.conversationStatesDropDown);
+            startActivity(new Intent(view.getContext(), ConversationStateEditing.class));
+            transTextView.callOnClick();
+        }
+        else if(tags[0].compareTo("ChangeBaseStateConversationTransition") == 0)
+        {
+            int id = Integer.parseInt(tags[2]);
+            ChangeBaseConvoStateTransitionEditing.givenTransition = (ChangeBaseStateConversationTransition) gameObjects.findObjectById(id);
+            TextView transTextView = findViewById(R.id.conversationTransitionsDropDown);
+            startActivity(new Intent(view.getContext(), ChangeBaseConvoStateTransitionEditing.class));
+            transTextView.callOnClick();
+        }
+        else if(tags[0].compareTo("NormalConversationTransition") == 0)
+        {
+            int id = Integer.parseInt(tags[2]);
+            NormalConversationTransitionEditing.normal = true;
+            NormalConversationTransitionEditing.givenTransition = (NormalConversationTransition) gameObjects.findObjectById(id);
+            TextView transTextView = findViewById(R.id.conversationTransitionsDropDown);
+            startActivity(new Intent(view.getContext(), NormalConversationTransitionEditing.class));
+            transTextView.callOnClick();
+        }
+        else if(tags[0].compareTo("TradingConversationTransition") == 0)
+        {
+            int id = Integer.parseInt(tags[2]);
+            NormalConversationTransitionEditing.normal = false;
+            NormalConversationTransitionEditing.otherGivenTransition = (TradingConversationTransition) gameObjects.findObjectById(id);
+            TextView transTextView = findViewById(R.id.conversationTransitionsDropDown);
+            startActivity(new Intent(view.getContext(), NormalConversationTransitionEditing.class));
+            transTextView.callOnClick();
+        }
     }
 
     //Dropdown menu stuff
@@ -352,6 +420,20 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         else if(type.compareTo("Has Spell") == 0)
         {
             startActivity(new Intent(this, ConditionalHasSpellEditing.class));
+        }
+        else if(type.compareTo("Change State Convo Transition") == 0)
+        {
+            startActivity(new Intent(this, ChangeBaseConvoStateTransitionEditing.class));
+        }
+        else if(type.compareTo("Normal Convo Transition") == 0)
+        {
+            NormalConversationTransitionEditing.normal = true;
+            startActivity(new Intent(this, NormalConversationTransitionEditing.class));
+        }
+        else if(type.compareTo("Trading Convo Transition") == 0)
+        {
+            NormalConversationTransitionEditing.normal = false;
+            startActivity(new Intent(this, NormalConversationTransitionEditing.class));
         }
         return true;
     }
@@ -507,7 +589,14 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         {
             for(Enemy s : gameObjects.enemies)
             {
-                strings.add(""+s.getId());
+                if(s.uniqueUserId.isEmpty())
+                {
+                    strings.add(""+s.getId());
+                }
+                else
+                {
+                    strings.add(s.uniqueUserId);
+                }
                 ids.add(""+s.getId());
                 types.add("Enemy");
             }
@@ -518,7 +607,14 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         {
             for(NPC s : gameObjects.npcs)
             {
-                strings.add(""+s.getId());
+                if(s.uniqueUserId.isEmpty())
+                {
+                    strings.add(""+s.getId());
+                }
+                else
+                {
+                    strings.add(s.uniqueUserId);
+                }
                 ids.add(""+s.getId());
                 types.add("NPC");
             }
@@ -528,7 +624,14 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         {
             for(ConversationState s : gameObjects.convoStates)
             {
-                strings.add(""+s.getId());
+                if(s.uniqueUserId.isEmpty())
+                {
+                    strings.add(""+s.getId());
+                }
+                else
+                {
+                    strings.add(s.uniqueUserId);
+                }
                 ids.add(""+s.getId());
                 types.add("ConversationState");
             }
@@ -539,9 +642,21 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         {
             for(ConversationTransition s : gameObjects.convoTransitions)
             {
-                strings.add(""+s.getId());
+                if(s instanceof ChangeBaseStateConversationTransition)
+                {
+                    types.add("ChangeBaseStateConversationTransition");
+                }
+                if(s instanceof NormalConversationTransition)
+                {
+                    types.add("NormalConversationTransition");
+                }
+                if(s instanceof TradingConversationTransition)
+                {
+                    types.add("TradingConversationTransition");
+                }
+                strings.add(s.getEditMainId());
                 ids.add(""+s.getId());
-                types.add("ConversationTransition");
+
             }
 
             addObjects(9, strings, types, ids);

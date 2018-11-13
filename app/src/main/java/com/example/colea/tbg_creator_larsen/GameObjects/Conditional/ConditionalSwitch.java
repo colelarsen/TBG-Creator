@@ -198,6 +198,12 @@ public class ConditionalSwitch extends Conditional {
         }
     }
 
+    public static void clearData()
+    {
+        switches = new ArrayList<>();
+        switchesValue = new ArrayList<>();
+    }
+
     public static boolean isOn(String x)
     {
         for(int i = 0; i < switches.size(); i++)

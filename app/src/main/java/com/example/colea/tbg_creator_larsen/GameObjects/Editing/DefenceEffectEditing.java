@@ -96,8 +96,8 @@ public class DefenceEffectEditing extends AppCompatActivity implements Lifecycle
         newItem.description = description;
 
         if(givenEffect == null) {
-            EditMain.gameObjects.effects.add(newItem);
             newItem.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.effects.add(newItem);
         }
 
         this.onBackPressed();

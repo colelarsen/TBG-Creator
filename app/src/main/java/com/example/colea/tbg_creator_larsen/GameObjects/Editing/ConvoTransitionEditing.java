@@ -50,7 +50,10 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
             disValEdit.setText(givenTransition.displayString);
             transValEdit.setText(givenTransition.transitionString);
             uniqueEdit.setText(givenTransition.uniqueUserId);
-            npcEdit.setText(""+givenTransition.npc.id);
+
+            if(givenTransition.npc != null) {
+                npcEdit.setText(givenTransition.npc.uniqueUserId+"@" + givenTransition.npc.id);
+            }
             if(givenTransition.conditional != null) {
                 condEdit.setText(givenTransition.conditional.getUUID() + "@"+givenTransition.conditional.getId());
             }
@@ -68,7 +71,7 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
                 TextView text = new TextView(row.getContext());
                 text.setText("Chain " + (chains.getChildCount() - 1) + "          ");
                 TextView b = new TextView(row.getContext());
-                b.setText(""+t.getId());
+                b.setText(t.getUniqueUserId()+"@"+t.getId());
                 b.setOnClickListener(this);
                 row.addView(text);
                 row.addView(b);
@@ -94,7 +97,13 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
         String disVal = disValEdit.getText().toString();
         String transVal = transValEdit.getText().toString();
         String uniqueId = uniqueEdit.getText().toString();
-        int npcId = Integer.parseInt(npcEdit.getText().toString());
+
+        String npcString = npcEdit.getText().toString();
+        NPC npc = null;
+        if(npcString.compareTo("N/A") != 0) {
+            int npcId = Integer.parseInt(npcString.split("@")[1]);
+            npc = (NPC)EditMain.gameObjects.findObjectById(npcId);
+        }
 
         Conditional conditional = null;
         if(condEdit.getText().toString().compareTo("N/A") != 0) {
@@ -127,7 +136,7 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
         ConvoTransition x = givenTransition;
         if(x == null)
         {
-            x = new ConvoTransition(disVal, transVal, (NPC)EditMain.gameObjects.findObjectById(npcId));
+            x = new ConvoTransition(disVal, transVal, npc);
         }
 
         //Set Everything
@@ -136,7 +145,7 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
         x.transitionString = transVal;
         x.setConditional(conditional);
         x.setState(state);
-        x.npc = (NPC)EditMain.gameObjects.findObjectById(npcId);
+        x.npc = npc;
         for(Transition t : chainTrans)
         {
             x.addChain(t);
@@ -144,8 +153,8 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
 
         if(givenTransition == null)
         {
-            EditMain.gameObjects.transitions.add(x);
             x.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.transitions.add(x);
         }
         this.onBackPressed();
     }
@@ -194,7 +203,7 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
         popup.getMenu().add("N/A");
         for(NPC t : npcs)
         {
-            String id = ""+t.getId();
+            String id = t.uniqueUserId+"@"+t.getId();
             popup.getMenu().add(id);
         }
         lastClicked = (TextView)view;

@@ -45,7 +45,12 @@
         <activity android:name=".Editing.HealingEffectEditing" />
         <activity android:name=".Editing.ConditionalSwitchEditing" />
         <activity android:name=".Editing.ConditionalHasObjectEdit" />
-        <activity android:name=".Editing.ConditionalHasSpellEditing"></activity>
+        <activity android:name=".Editing.ConditionalHasSpellEditing" />
+        <activity android:name=".Editing.EnemyEditing" />
+        <activity android:name=".Editing.NpcEditing" />
+        <activity android:name=".Editing.ConversationStateEditing" />
+        <activity android:name=".Editing.ChangeBaseConvoStateTransitionEditing" />
+        <activity android:name=".Editing.NormalConversationTransitionEditing"></activity>
     </application>
 
 </manifest>

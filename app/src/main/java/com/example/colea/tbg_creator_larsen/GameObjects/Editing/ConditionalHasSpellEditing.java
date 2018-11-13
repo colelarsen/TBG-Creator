@@ -115,8 +115,8 @@ public class ConditionalHasSpellEditing extends AppCompatActivity implements Pop
         conditionalSwitch.object = name;
         conditionalSwitch.uniqueUserId = uniqueName;
         if(givenConditional == null) {
-            EditMain.gameObjects.conditionals.add(conditionalSwitch);
             conditionalSwitch.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.conditionals.add(conditionalSwitch);
         }
         this.onBackPressed();
     }

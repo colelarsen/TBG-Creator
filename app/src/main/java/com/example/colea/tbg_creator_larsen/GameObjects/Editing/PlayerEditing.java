@@ -30,7 +30,6 @@ import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Normal
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.State;
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Transition;
 import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class PlayerEditing extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, LifecycleObserver, View.OnClickListener {

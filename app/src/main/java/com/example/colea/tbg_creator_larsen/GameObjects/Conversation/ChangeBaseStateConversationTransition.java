@@ -10,12 +10,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ChangeBaseStateConversationTransition extends ConversationTransition{
-    private String displayString;
-    private ConversationState toTrans;
-    private Conditional conditional;
+    public String displayString;
+    public ConversationState toTrans;
+    public Conditional conditional;
     public int id;
-    private ConversationCharacter npc;
-    private ConversationState toBaseState;
+    public ConversationCharacter npc;
+    public ConversationState toBaseState;
+    public String uniqueUserId = "";
+
+    @Override
+    public String getUUID() {
+        return uniqueUserId;
+    }
+
+    @Override
+    public String getEditMainId() {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        return uniqueUserId;
+    }
 
     public ChangeBaseStateConversationTransition(String displayVal)
     {
@@ -66,6 +81,11 @@ public class ChangeBaseStateConversationTransition extends ConversationTransitio
             int id = nextObject.getInt("id");
             String disString = nextObject.getString("displayString");
             int npcId = nextObject.getInt("npc");
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
 
             int toTransId = -1;
             if(nextObject.has("toTrans"))
@@ -82,7 +102,9 @@ public class ChangeBaseStateConversationTransition extends ConversationTransitio
             {
                 baseId = nextObject.getInt("toBase");
             }
-            return new ChangeBaseStateConversationTransition(disString, id, npcId, toTransId, baseId, condId);
+            ChangeBaseStateConversationTransition changeBaseStateConversationTransition = new ChangeBaseStateConversationTransition(disString, id, npcId, toTransId, baseId, condId);
+            changeBaseStateConversationTransition.uniqueUserId = uuid;
+            return changeBaseStateConversationTransition;
         }
         catch(JSONException e)
         {
@@ -99,6 +121,7 @@ public class ChangeBaseStateConversationTransition extends ConversationTransitio
             stateObject.put("id", id);
             stateObject.put("displayString", displayString);
             stateObject.put("npc", npc.getId());
+            stateObject.put("uuid", uniqueUserId);
             if(toTrans != null) {
                 stateObject.put("toTrans", toTrans.getId());
             }

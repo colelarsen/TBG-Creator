@@ -11,6 +11,10 @@ public abstract class ConversationTransition {
     {
     }
 
+    public abstract String getEditMainId();
+
+    public abstract String getUUID();
+
     public abstract void setState(ConversationState trans);
 
     public abstract String getDisplayString();

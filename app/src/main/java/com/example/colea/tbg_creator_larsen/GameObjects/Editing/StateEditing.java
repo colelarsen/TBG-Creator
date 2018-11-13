@@ -71,12 +71,12 @@ public class StateEditing extends AppCompatActivity implements PopupMenu.OnMenuI
         String uniqueName = uniqueNameField.getText().toString();
         String desc = displayField.getText().toString();
         boolean isStart = isStartField.isChecked();
-        int id = EditMain.gameObjects.getNewId();
 
 
         State newState;
         if(givenState == null)
         {
+            int id = EditMain.gameObjects.getNewId();
             newState = new State(desc, id);
         }
         else
@@ -108,7 +108,6 @@ public class StateEditing extends AppCompatActivity implements PopupMenu.OnMenuI
         }
         if(givenState == null) {
             EditMain.gameObjects.states.add(newState);
-            newState.id = EditMain.gameObjects.getNewId();
         }
         givenState = null;
         this.onBackPressed();

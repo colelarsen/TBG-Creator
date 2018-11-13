@@ -99,8 +99,8 @@ public class WeaponEditing extends AppCompatActivity implements LifecycleObserve
 
 
         if(givenWeapon == null) {
-            EditMain.gameObjects.items.add(newItem);
             newItem.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.items.add(newItem);
         }
         this.onBackPressed();
     }

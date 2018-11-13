@@ -123,8 +123,8 @@ public class ConditionalSwitchEditing extends AppCompatActivity implements Popup
         conditionalSwitch.not = not;
         conditionalSwitch.uniqueUserId = uniqueName;
         if(givenConditional == null) {
-            EditMain.gameObjects.conditionals.add(conditionalSwitch);
             conditionalSwitch.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.conditionals.add(conditionalSwitch);
         }
         this.onBackPressed();
     }

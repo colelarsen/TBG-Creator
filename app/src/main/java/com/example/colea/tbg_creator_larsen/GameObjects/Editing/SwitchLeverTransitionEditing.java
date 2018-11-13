@@ -61,7 +61,7 @@ public class SwitchLeverTransitionEditing extends AppCompatActivity implements P
                 TextView text = new TextView(row.getContext());
                 text.setText("Chain " + (chains.getChildCount() - 1) + "          ");
                 TextView b = new TextView(row.getContext());
-                b.setText(""+t.getId());
+                b.setText(t.getUniqueUserId()+"@"+t.getId());
                 b.setOnClickListener(this);
                 row.addView(text);
                 row.addView(b);
@@ -83,6 +83,8 @@ public class SwitchLeverTransitionEditing extends AppCompatActivity implements P
         EditText uniqueEdit = findViewById(R.id.uniqueNameNormTransition);
         TextView condEdit = findViewById(R.id.conditionalSelectNormTrans);
         TextView stateEdit = findViewById(R.id.stateSelectNormTrans);
+
+        //@TODO Make this a textview which lets you select from the NamedTransitions
         EditText switchEdit = findViewById(R.id.switchNameNormTransition2);
 
         String switchName = switchEdit.getText().toString();
@@ -137,8 +139,9 @@ public class SwitchLeverTransitionEditing extends AppCompatActivity implements P
 
         if(givenTransition == null)
         {
-            EditMain.gameObjects.transitions.add(x);
             x.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.transitions.add(x);
+
         }
         this.onBackPressed();
     }

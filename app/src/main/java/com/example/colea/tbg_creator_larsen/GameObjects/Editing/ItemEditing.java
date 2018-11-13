@@ -110,8 +110,9 @@ public class ItemEditing extends AppCompatActivity implements PopupMenu.OnMenuIt
 
 
         if(givenItem == null) {
-            EditMain.gameObjects.items.add(newItem);
             newItem.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.items.add(newItem);
+
         }
 
 

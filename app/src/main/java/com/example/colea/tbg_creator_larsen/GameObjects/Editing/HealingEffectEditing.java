@@ -84,8 +84,9 @@ public class HealingEffectEditing extends AppCompatActivity {
         newItem.name = name;
         newItem.description = description;
         if(givenEffect == null) {
-            EditMain.gameObjects.effects.add(newItem);
             newItem.id = EditMain.gameObjects.getNewId();
+            EditMain.gameObjects.effects.add(newItem);
+
         }
 
         this.onBackPressed();

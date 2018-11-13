@@ -20,12 +20,11 @@ public class NPC implements ConversationCharacter {
     public boolean canTrade;
     public Inventory inventory;
     public String name;
+    public String uniqueUserId = "";
     public int id;
-
-
     public int convoStartId = -1;
-    public ArrayList<Integer> itemIds;
 
+    public ArrayList<Integer> itemIds;
     public void link(GameObjects gameObjects)
     {
         convoStart = (ConversationState) gameObjects.findObjectById(convoStartId);
@@ -62,6 +61,11 @@ public class NPC implements ConversationCharacter {
             }
             int itemCap = nextObject.getInt("itemCap");
             int gold = nextObject.getInt("gold");
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
 
 
             ArrayList<Integer> itemIds = new ArrayList<>();
@@ -77,6 +81,7 @@ public class NPC implements ConversationCharacter {
             NPC npc = new NPC(name, canTrade, i, id);
             npc.convoStartId = convoStartId;
             npc.itemIds = itemIds;
+            npc.uniqueUserId = uuid;
             return npc;
         }
         catch (JSONException e)
@@ -96,6 +101,7 @@ public class NPC implements ConversationCharacter {
             stateObject.put("canTrade", canTrade);
             stateObject.put("name", name);
             stateObject.put("convoStart", convoStart.getId());
+            stateObject.put("uuid", uniqueUserId);
 
             JSONArray items = new JSONArray();
             for(Item i : inventory.getItems())

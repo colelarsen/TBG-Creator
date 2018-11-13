@@ -25,8 +25,8 @@ public class Enemy implements CombatTracker, ConversationCharacter {
     public int defenceScore = 0;
     public int attackScore = 0;
     public String description;
-    private Weapon equippedWeapon;
-    private Equipment equippedArmor;
+    public Weapon equippedWeapon;
+    public Equipment equippedArmor;
     public ArrayList<Item> drops;
     public ArrayList<Double> dropChance;
     public boolean canConverse;
@@ -34,6 +34,7 @@ public class Enemy implements CombatTracker, ConversationCharacter {
     public ConversationState passState;
     public boolean isPassive = false;
     public int id;
+    public String uniqueUserId = "";
 
 
     public static Enemy clone(Enemy e)
@@ -117,6 +118,12 @@ public class Enemy implements CombatTracker, ConversationCharacter {
             String name = (String)nextObject.get("name");
             String description = (String)nextObject.get("description");
 
+            String uuid = "";
+            if(nextObject.has("uuid"))
+            {
+                uuid = nextObject.getString("uuid");
+            }
+
             int weaponId = -1;
             int equipId = -1;
 
@@ -153,7 +160,7 @@ public class Enemy implements CombatTracker, ConversationCharacter {
 
             //Still needs: drops, weaponId, equipmentId
             Enemy enemy = new Enemy(hp, maxHP, name, description, dropChance, canConverse, id);
-
+            enemy.uniqueUserId = uuid;
             ArrayList<Integer> drops = new ArrayList<>();
             if(nextObject.has("drops")) {
                 JSONArray dropArray = nextObject.getJSONArray("drops");
@@ -186,6 +193,7 @@ public class Enemy implements CombatTracker, ConversationCharacter {
             stateObject.put("health", health);
             stateObject.put("name", name);
             stateObject.put("description", description);
+            stateObject.put("uuid", uniqueUserId);
             if(equippedWeapon != null) {
                 stateObject.put("equippedWeapon", equippedWeapon.getId());
             }
