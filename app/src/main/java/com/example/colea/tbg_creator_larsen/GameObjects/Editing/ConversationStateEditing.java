@@ -69,9 +69,8 @@ public class ConversationStateEditing extends AppCompatActivity implements Popup
         ConversationState newState;
         if(givenState == null)
         {
-            int id = EditMain.gameObjects.getNewId();
             newState = new ConversationState(desc);
-            newState.id = id;
+
         }
         else
         {
@@ -95,6 +94,7 @@ public class ConversationStateEditing extends AppCompatActivity implements Popup
 
 
         if(givenState == null) {
+            newState.id = EditMain.gameObjects.getNewId();
             EditMain.gameObjects.convoStates.add(newState);
         }
         givenState = null;

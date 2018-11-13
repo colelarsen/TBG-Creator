@@ -23,6 +23,7 @@ public class ItemTransition extends Transition {
     public ArrayList<String> itemDescriptions;
     public int id;
     public String uniqueUserId = "";
+    public boolean oneTimePickUp = true;
 
     public String getUniqueUserId()
     {
@@ -83,6 +84,11 @@ public class ItemTransition extends Transition {
             int id = nextObject.getInt("id");
             String displayString = nextObject.getString("displayString");
             String transitionString = nextObject.getString("transitionString");
+            boolean oneTime = false;
+            if(nextObject.has("oneTimePickUp"))
+            {
+                oneTime = nextObject.getBoolean("oneTimePickUp");
+            }
             int toTransId = -1;
             if(nextObject.has("toTrans"))
             {
@@ -123,6 +129,7 @@ public class ItemTransition extends Transition {
             }
             ItemTransition itemTransition = new ItemTransition(displayString, transitionString, itemIds, itemStrings, id, toTransId, condId, chainIds);
             itemTransition.uniqueUserId = uuid;
+            itemTransition.oneTimePickUp = oneTime;
             return itemTransition;
 
         }
@@ -151,6 +158,7 @@ public class ItemTransition extends Transition {
             stateObject.put("displayString", displayString);
             stateObject.put("transitionString", transitionString);
             stateObject.put("uuid", uniqueUserId);
+            stateObject.put("oneTimePickUp", oneTimePickUp);
             if(conditional != null) {
                 stateObject.put("conditional", conditional.getId());
             }
@@ -224,7 +232,10 @@ public class ItemTransition extends Transition {
         {
             Player.getPlayer().inventory.add(i);
         }
-        items = null;
+
+        if(oneTimePickUp) {
+            items.clear();
+        }
         return toTrans;
     }
 

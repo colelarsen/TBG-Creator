@@ -145,7 +145,7 @@ public class ConditionalHasObjectEdit extends AppCompatActivity implements Popup
         popup.getMenu().add("");
         for(Item item : EditMain.gameObjects.items)
         {
-            String id = item.name;
+            String id = item.getName();
             popup.getMenu().add(id);
         }
         lastClicked = (TextView)view;

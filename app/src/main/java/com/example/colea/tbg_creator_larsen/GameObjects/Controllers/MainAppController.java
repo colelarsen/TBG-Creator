@@ -13,15 +13,17 @@ public class MainAppController {
 
     public static void saveFile(Context context, String content, String fileName)
     {
-        File fileDirectory = context.getFilesDir();
-        if(fileName.compareTo("GameNames") != 0) {
-            FileOutputStream outputStream;
-            try {
-                outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-                outputStream.write(content.getBytes());
-                outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(!content.isEmpty()) {
+            File fileDirectory = context.getFilesDir();
+            if (fileName.compareTo("GameNames") != 0) {
+                FileOutputStream outputStream;
+                try {
+                    outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                    outputStream.write(content.getBytes());
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

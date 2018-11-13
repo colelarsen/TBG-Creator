@@ -146,10 +146,7 @@ public class ConvoTransitionEditing extends AppCompatActivity implements PopupMe
         x.setConditional(conditional);
         x.setState(state);
         x.npc = npc;
-        for(Transition t : chainTrans)
-        {
-            x.addChain(t);
-        }
+        x.chainTransitions = chainTrans;
 
         if(givenTransition == null)
         {

@@ -100,7 +100,9 @@ public class NPC implements ConversationCharacter {
             stateObject.put("id", id);
             stateObject.put("canTrade", canTrade);
             stateObject.put("name", name);
-            stateObject.put("convoStart", convoStart.getId());
+            if(convoStart != null) {
+                stateObject.put("convoStart", convoStart.getId());
+            }
             stateObject.put("uuid", uniqueUserId);
 
             JSONArray items = new JSONArray();

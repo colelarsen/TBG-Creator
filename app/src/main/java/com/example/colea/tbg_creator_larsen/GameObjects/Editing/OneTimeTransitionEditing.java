@@ -127,11 +127,7 @@ public class OneTimeTransitionEditing extends AppCompatActivity  implements Popu
         x.transitionString = transVal;
         x.setConditional(conditional);
         x.setState(state);
-        for(Transition t : chainTrans)
-        {
-            x.addChain(t);
-        }
-
+        x.chainTransitions = chainTrans;
         if(givenTransition == null)
         {
             x.id = EditMain.gameObjects.getNewId();

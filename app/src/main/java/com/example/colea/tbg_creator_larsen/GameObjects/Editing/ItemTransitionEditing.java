@@ -42,6 +42,8 @@ public class ItemTransitionEditing extends AppCompatActivity implements PopupMen
             EditText uniqueEdit = findViewById(R.id.uniqueNameItemTransition);
             TextView condEdit = findViewById(R.id.conditionalSelectItemTrans);
             TextView stateEdit = findViewById(R.id.stateSelectItemTrans);
+            CheckBox oneTime = findViewById(R.id.oneTimePickUp);
+            oneTime.setChecked(givenTransition.oneTimePickUp);
 
             disValEdit.setText(givenTransition.displayString);
             transValEdit.setText(givenTransition.transitionString);
@@ -110,6 +112,7 @@ public class ItemTransitionEditing extends AppCompatActivity implements PopupMen
         EditText uniqueEdit = findViewById(R.id.uniqueNameItemTransition);
         TextView condEdit = findViewById(R.id.conditionalSelectItemTrans);
         TextView stateEdit = findViewById(R.id.stateSelectItemTrans);
+        CheckBox oneTime = findViewById(R.id.oneTimePickUp);
 
         String disVal = disValEdit.getText().toString();
         String transVal = transValEdit.getText().toString();
@@ -174,10 +177,8 @@ public class ItemTransitionEditing extends AppCompatActivity implements PopupMen
         x.setState(state);
         x.itemDescriptions = itemDescs;
         x.items = items;
-        for(Transition t : chainTrans)
-        {
-            x.addChain(t);
-        }
+        x.chainTransitions = chainTrans;
+        x.oneTimePickUp = oneTime.isChecked();
 
         if(givenTransition == null)
         {

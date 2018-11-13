@@ -231,6 +231,20 @@ public class PlayerInfo extends AppCompatActivity {
             {
                 case "Item": {
                     Item item = Player.getPlayer().inventory.findItemById(itemNum);
+                    if(item instanceof Weapon)
+                    {
+                        if(((Weapon) item).isEqu)
+                        {
+                            ((Weapon) item).equip();
+                        }
+                    }
+                    if(item instanceof Equipment)
+                    {
+                        if(((Equipment) item).isEqu)
+                        {
+                            ((Equipment) item).equip();
+                        }
+                    }
                     item.drop();
                     Log.d("Inventory Testing Drop", "Sword");
                     break;

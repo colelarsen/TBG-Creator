@@ -89,7 +89,7 @@ public class NormalConversationTransitionEditing extends AppCompatActivity imple
                 conditionalEdit.setText("N/A");
             }
 
-            if(givenTransition.toTrans != null)
+            if(otherGivenTransition.toTrans != null)
             {
                 toStateEdit.setText(otherGivenTransition.toTrans.uniqueUserId + "@" + otherGivenTransition.toTrans.id);
             }
@@ -98,7 +98,7 @@ public class NormalConversationTransitionEditing extends AppCompatActivity imple
                 toStateEdit.setText("N/A");
             }
 
-            titleBar.setText("Normal Convo Transition " + otherGivenTransition.id);
+            titleBar.setText("Trading Convo Transition " + otherGivenTransition.id);
         }
     }
 

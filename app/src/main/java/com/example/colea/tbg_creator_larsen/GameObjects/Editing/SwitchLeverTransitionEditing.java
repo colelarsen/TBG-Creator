@@ -132,10 +132,7 @@ public class SwitchLeverTransitionEditing extends AppCompatActivity implements P
         x.setConditional(conditional);
         x.setState(state);
         x.switc = switchName;
-        for(Transition t : chainTrans)
-        {
-            x.addChain(t);
-        }
+        x.chainTransitions = chainTrans;
 
         if(givenTransition == null)
         {

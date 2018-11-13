@@ -174,10 +174,7 @@ public class CombatTransitionEditing extends AppCompatActivity implements PopupM
         x.setState(state);
         x.oneTimeCombat = oneTimeCombat;
         x.enemies = enemies;
-        for(Transition t : chainTrans)
-        {
-            x.addChain(t);
-        }
+
 
         if(givenTransition == null)
         {
