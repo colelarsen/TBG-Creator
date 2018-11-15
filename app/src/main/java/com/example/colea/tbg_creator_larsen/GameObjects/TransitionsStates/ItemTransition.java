@@ -226,7 +226,9 @@ public class ItemTransition extends Transition {
     {
         for(Transition transition : chainTransitions)
         {
-            transition.trans(t);
+            if(transition.check()) {
+                transition.trans(t);
+            }
         }
         for(Item i : items)
         {

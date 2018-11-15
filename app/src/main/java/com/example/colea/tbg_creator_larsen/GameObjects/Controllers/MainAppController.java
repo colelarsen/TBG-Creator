@@ -11,8 +11,15 @@ import java.util.Scanner;
 
 public class MainAppController {
 
+    //This controller handlers saving games and some misc functions
+
+    //Safe a file
     public static void saveFile(Context context, String content, String fileName)
     {
+        if(fileName.charAt(fileName.length()-1) == '\n')
+        {
+            fileName = fileName.substring(0, fileName.length()-1);
+        }
         if(!content.isEmpty()) {
             File fileDirectory = context.getFilesDir();
             if (fileName.compareTo("GameNames") != 0) {
@@ -28,8 +35,13 @@ public class MainAppController {
         }
     }
 
+    //Update the GameNames to include the file
     public static void saveGameName(Context context, String content)
     {
+        if(content.charAt(content.length()-1) == '\n')
+        {
+            content = content.substring(0, content.length()-1);
+        }
         String[] ret = getGameNames(context);
         if(ret[0].compareTo("") != 0) {
             content = "@" + content;
@@ -49,6 +61,7 @@ public class MainAppController {
 
     }
 
+    //Create a new GameNames file
     private static void makeNewGameNames(Context context, String content)
     {
         File fileDirectory = context.getFilesDir();
@@ -64,6 +77,7 @@ public class MainAppController {
         }
     }
 
+    //Delete all games contained withing GameNAmes
     public static void deleteAllGames(Context context)
     {
         File fileDirectory = context.getFilesDir();
@@ -71,6 +85,7 @@ public class MainAppController {
         file.delete();
     }
 
+    //Delete fileName
     public static void deleteGame(Context context, String fileName)
     {
         File fileDirectory = context.getFilesDir();
@@ -91,11 +106,13 @@ public class MainAppController {
         }
     }
 
+    //Test if string is an integer
     public static boolean stringIsInt(String s)
     {
         return s.matches("^[0-9]*$");
     }
 
+    //Check in GameNames if a game with that name already exists
     public static boolean nameExists(Context context, String name)
     {
         String[] names = getGameNames(context);
@@ -109,7 +126,7 @@ public class MainAppController {
         return false;
     }
 
-
+    //Returns the content of a file
     public static String getFileContent(Context context, String fileName)
     {
         String ret = "";

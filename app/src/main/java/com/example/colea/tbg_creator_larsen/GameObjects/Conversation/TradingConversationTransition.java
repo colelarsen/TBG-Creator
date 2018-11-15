@@ -7,6 +7,7 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//Ssame as normal conversation transition though it flags trading to be shown
 public class TradingConversationTransition extends ConversationTransition {
     public String displayString;
     public ConversationState toTrans;

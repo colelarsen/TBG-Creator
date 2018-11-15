@@ -29,56 +29,14 @@ public class TestActivity extends AppCompatActivity {
 
     public State currentState;
 
-    public String EXTRA_MESSAGE = "wooo";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         setUpStartState();
-        //testInventory();
-        //testSpells();
     }
 
-
-    public void testSpells()
-    {
-        Player p = Player.getPlayer();
-        //Testing spells
-        DamagingEffect de = new DamagingEffect("Fireball", "A ball of fire", 5);
-        HealingEffect he = new HealingEffect("Healing", "A warm fuzzy feeling", 5);
-        DefenceEffect defenceEffect = new DefenceEffect("Mage Armor", "Magic Armor", 4, 5);
-        p.spells.add(de);
-        p.spells.add(he);
-        p.spells.add(defenceEffect);
-
-        GameController.effects.add(defenceEffect);
-        GameController.effects.add(de);
-        GameController.effects.add(he);
-    }
-
-    public void testInventory()
-    {
-        Inventory x = Player.getPlayer().inventory;
-        Log.d("Inventory Testing", x.itemString(x));
-
-        x.add(new Weapon("Sword", "A sword of great Strength", 20 , false, 10));
-        x.add(new Weapon("BIGGER SWORD", "A sword of great Strength", 20 , false, 15));
-        x.add(new Equipment("Chainmail", "A sword of great Strength", 20 , false, 10));
-        x.add(new Equipment("Plate Armor", "A sword of great Strength", 20 , false, 15));
-
-        Log.d("Inventory Testing Add I", x.itemString(x));
-
-        x.add(new Item("Key", "A key", 0, true));
-        //x.getItems().get(0).drop();
-        //Log.d("Inventory Testing drop", x.itemString());
-
-        HealingEffect e = new HealingEffect("HealingSmall", "A warm fuzzy feeling", 1);
-        GameController.effects.add(e);
-        x.add(new Item("Healing Potion", "A Red Bottle", 10, false, true, false, e));
-        Player.getPlayer().inventory = x;
-    }
-
+    //Sets up the view with the start state
     public void setUpStartState()
     {
         GameController.stateChain.add(GameController.currentState);
@@ -107,11 +65,13 @@ public class TestActivity extends AppCompatActivity {
         scroller.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
+    //Handles button press Player Info
     public void showPlayerInfo(View view)
     {
         startActivity(new Intent(TestActivity.this, PlayerInfo.class));
     }
 
+    //Handles button press Quit
     public void onQuitClick(View view)
     {
         GameController.effects.clear();
@@ -119,18 +79,20 @@ public class TestActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
+    //Segues to combat
     public void showCombat(Enemy[] enemies)
     {
         Combat.enemies = enemies;
         startActivity(new Intent(TestActivity.this, Combat.class));
     }
 
+    //Segues to Conversation
     public void showConversation()
     {
         startActivity(new Intent(TestActivity.this, Conversation.class));
     }
 
+    //This updates the Log of what has happened so far with the given string
     public void updateLog(String s)
     {
         EditText mainText = findViewById(R.id.MainText);
@@ -139,6 +101,7 @@ public class TestActivity extends AppCompatActivity {
         scroller.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
+    //Disables buttons on screen
     public void disableButtons()
     {
         int[] ids = {R.id.op0, R.id.op1, R.id.op2, R.id.op3, R.id.op4, R.id.op5, R.id.op6, R.id.op7, R.id.player_info_button, R.id.player_saveQuit};
@@ -150,6 +113,7 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
+    //Enables buttons on screen
     public void enableButtons()
     {
         int[] ids = {R.id.player_saveQuit, R.id.op0, R.id.op1, R.id.op2, R.id.op3, R.id.op4, R.id.op5, R.id.op6, R.id.op7, R.id.player_info_button};
@@ -167,8 +131,80 @@ public class TestActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
+    //Performs the transition given what button was pressed
+    public void makeTransition(int choice)
+    {
+        Transition[] transitions = GameController.currentState.getTransitions();
+        if(transitions[choice] != null) {
+
+            //If the transition is valid
+            if (transitions[choice].check()) {
+
+                //What state we are going to
+                State goingTo = GameController.transStates(this, choice);
+                if (goingTo != null) {
+                    //Update the text boxes
+                    EditText mainText = findViewById(R.id.MainText);
+                    EditText pastText = findViewById(R.id.PastText);
+                    pastText.getText().append(mainText.getText());
+                    pastText.getText().append("\n" + (choice+1) + ")\n");
+                    mainText.getText().clear();
+
+                    //Get the Transition String
+                    String onTrans = goingTo.getTransitions()[choice].getTransitionString();
+                    if (onTrans != null) {
+                        mainText.getText().append("\n" + onTrans);
+                    }
+
+                    //If the transition given will change the activity (Combat / Conversation)
+                    //Delay the transition so the text can be read
+                    if(transitions[choice].shouldStopButtons())
+                    {
+                        disableButtons();
+                        Handler h=new Handler();
+                        h.postDelayed(new Runnable(){
+                            @Override
+                            public void run(){
+                                updateLog("\n\n>" + GameController.currentState.getText() + "\n");
+                                int i = 0;
+                                while (i < GameController.currentState.getTransitions().length && GameController.currentState.getTransitions()[i] != null) {
+                                    if (GameController.currentState.getTransitions()[i].check()) {
+                                        updateLog("(" + (i + 1) + ") " + GameController.currentState.getTransitions()[i].getDisplayString());
+                                    }
+                                    i++;
+                                }
+                                ScrollView scroller = findViewById(R.id.scrollView2);
+                                scroller.fullScroll(ScrollView.FOCUS_DOWN);
+                                enableButtons();
+                            }
+                        }, 4000);
+                    }
+
+                    //Make the transition and update the text
+                    else {
+                        mainText.getText().append("\n\n>" + GameController.currentState.getText() + "\n");
+                        int i = 0;
+                        while (i < GameController.currentState.getTransitions().length) {
+                            if(GameController.currentState.getTransitions()[i] != null) {
+                                if (GameController.currentState.getTransitions()[i].check()) {
+                                    mainText.getText().append("\n(" + (i + 1) + ") " + GameController.currentState.getTransitions()[i].getDisplayString());
+                                }
+                            }
+                            i++;
+                        }
+
+                        //Scroll to the bottom of the screen
+                        mainText.requestFocus();
+                    }
+                }
+            }
+        }
+    }
+
+    //Determines what button was pressed and makeTransition on that choice
     public void choiceMade(View view)
     {
+        //Determine what button was pressed
         int choice = 0;
         switch (view.getId()) {
             case R.id.op0:
@@ -196,58 +232,6 @@ public class TestActivity extends AppCompatActivity {
                 choice = 7;
                 break;
         }
-        Transition[] transitions = GameController.currentState.getTransitions();
-        if(transitions[choice] != null) {
-            if (transitions[choice].check()) {
-                State goingTo = GameController.transStates(this, choice);
-
-                if (goingTo != null) {
-                    EditText mainText = findViewById(R.id.MainText);
-                    EditText pastText = findViewById(R.id.PastText);
-                    pastText.getText().append(mainText.getText());
-                    pastText.getText().append("\n" + (choice+1) + ")\n");
-                    mainText.getText().clear();
-
-                    String onTrans = goingTo.getTransitions()[choice].getTransitionString();
-                    if (onTrans != null) {
-                        mainText.getText().append("\n" + onTrans);
-                    }
-
-                    if(transitions[choice].shouldStopButtons())
-                    {
-                        disableButtons();
-                        Handler h=new Handler();
-                        h.postDelayed(new Runnable(){
-                            @Override
-                            public void run(){
-                                updateLog("\n\n>" + GameController.currentState.getText() + "\n");
-                                int i = 0;
-                                while (i < GameController.currentState.getTransitions().length && GameController.currentState.getTransitions()[i] != null) {
-                                    if (GameController.currentState.getTransitions()[i].check()) {
-                                        updateLog("(" + (i + 1) + ") " + GameController.currentState.getTransitions()[i].getDisplayString());
-                                    }
-                                    i++;
-                                }
-                                ScrollView scroller = findViewById(R.id.scrollView2);
-                                scroller.fullScroll(ScrollView.FOCUS_DOWN);
-                                enableButtons();
-                            }
-                        }, 4000);
-                    }
-                    else {
-                        mainText.getText().append("\n\n>" + GameController.currentState.getText() + "\n");
-                        int i = 0;
-                        while (i < GameController.currentState.getTransitions().length && GameController.currentState.getTransitions()[i] != null) {
-                            if (GameController.currentState.getTransitions()[i].check()) {
-                                mainText.getText().append("\n(" + (i + 1) + ") " + GameController.currentState.getTransitions()[i].getDisplayString());
-                            }
-                            i++;
-                        }
-                        ScrollView scroller = findViewById(R.id.scrollView2);
-                        mainText.requestFocus();
-                    }
-                }
-            }
-        }
+        makeTransition(choice);
     }
 }

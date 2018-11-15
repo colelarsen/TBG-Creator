@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "205479693693",
+    "firebase_url": "https://tbg-creator.firebaseio.com",
+    "project_id": "tbg-creator",
+    "storage_bucket": "tbg-creator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205479693693:android:cb8f6e4ed55eb509",
+        "android_client_info": {
+          "package_name": "com.example.colea.tbg_creator_larsen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205479693693-eu0rerd4fgnsq0ci5meodfon5372re6p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.colea.tbg_creator_larsen",
+            "certificate_hash": "9463e154be97867d98874870a78ce837ee217ba1"
+          }
+        },
+        {
+          "client_id": "205479693693-d5t2fakaqfg849ghk2jhd38ecut8lpou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp3sZNmpTuksSyZy2D2HF_ZQBn-sWJ1l4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205479693693-d5t2fakaqfg849ghk2jhd38ecut8lpou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

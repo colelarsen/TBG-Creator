@@ -5,6 +5,8 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
 import org.json.JSONObject;
 
 abstract public class Effect {
+    //Types of effects to add
+
     //Weakens / Buffs Attack
     //Weakens / Buffs Defence
     //Stuns single target and multi target

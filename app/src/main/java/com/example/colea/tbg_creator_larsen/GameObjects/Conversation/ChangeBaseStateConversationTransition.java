@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//Changes the given npc conversation state to the given conversation state
 public class ChangeBaseStateConversationTransition extends ConversationTransition{
     public String displayString;
     public ConversationState toTrans;
@@ -162,6 +163,7 @@ public class ChangeBaseStateConversationTransition extends ConversationTransitio
         return id;
     }
 
+    //Changes the given npc conversation state to the given conversation state
     public ConversationState getState()
     {
         npc.setStartState(toBaseState);

@@ -14,8 +14,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Player implements CombatTracker{
-    private static Player p = null;
 
+    //Player is a singleton object
+
+    private static Player p = null;
     private int health;
     public int maxHealth;
     public String name;

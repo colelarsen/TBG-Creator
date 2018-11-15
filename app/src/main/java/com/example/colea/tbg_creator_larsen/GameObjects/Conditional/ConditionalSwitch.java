@@ -22,24 +22,6 @@ public class ConditionalSwitch extends Conditional {
     public boolean not = false;
     public String uniqueUserId = "";
 
-    public String getUUID()
-    {
-        return uniqueUserId;
-    }
-
-    public String getMainId()
-    {
-        if(uniqueUserId.isEmpty())
-        {
-            return ""+id;
-        }
-        else
-        {
-            return getUUID();
-        }
-    }
-
-
     public int conditionalOrId = -1;
     public int conditionalAndId = -1;
     public ConditionalSwitch(boolean starting, String obj1, Conditional an, Conditional o)
@@ -58,6 +40,23 @@ public class ConditionalSwitch extends Conditional {
         conditionalOrId = orId;
         not = noT;
         id = i;
+    }
+
+    public String getUUID()
+    {
+        return uniqueUserId;
+    }
+
+    public String getMainId()
+    {
+        if(uniqueUserId.isEmpty())
+        {
+            return ""+id;
+        }
+        else
+        {
+            return getUUID();
+        }
     }
 
     @Override
@@ -179,12 +178,16 @@ public class ConditionalSwitch extends Conditional {
 
     }
 
-
     public int getId()
     {
         return id;
     }
 
+
+
+
+
+    //Flip the switch on given string
     public static void switchSwitch(String x)
     {
         for(int i = 0; i < switches.size(); i++)
@@ -198,12 +201,14 @@ public class ConditionalSwitch extends Conditional {
         }
     }
 
+    //Clear all data (After quitting game)
     public static void clearData()
     {
         switches = new ArrayList<>();
         switchesValue = new ArrayList<>();
     }
 
+    //Checks to see if the switch is on
     public static boolean isOn(String x)
     {
         for(int i = 0; i < switches.size(); i++)
@@ -222,6 +227,7 @@ public class ConditionalSwitch extends Conditional {
         not = !not;
     }
 
+    //Calculates the check to see if it should return true or false
     public boolean check() {
         boolean ret = false;
         for(int i = 0; i < switches.size(); i++)

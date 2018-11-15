@@ -141,6 +141,7 @@ public class HasSpell extends Conditional {
         not = !not;
     }
 
+    //Check to see if player has the given effect name
     public boolean check() {
         boolean hasSpell = false;
         boolean ret = false;

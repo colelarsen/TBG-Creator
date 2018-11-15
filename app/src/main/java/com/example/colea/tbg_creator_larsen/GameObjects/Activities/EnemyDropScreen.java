@@ -27,13 +27,13 @@ public class EnemyDropScreen extends AppCompatActivity implements View.OnClickLi
     }
 
     private static Inventory dropInventory;
+    //Add items and drop rates to the screen to see what will be dropped
     public static void addToDrops(ArrayList<Item> items, ArrayList<Double> dropRate)
     {
         if(dropInventory == null)
         {
             dropInventory = new Inventory(50);
         }
-
         if(items != null && dropRate != null) {
             for (int i = 0; i < items.size(); i++) {
                 double rand = Math.random();
@@ -51,6 +51,7 @@ public class EnemyDropScreen extends AppCompatActivity implements View.OnClickLi
     }
 
     private static View vi;
+    //Set up what the player has
     public void setUpPlayerInventory(View view)
     {
         vi = view;
@@ -89,6 +90,7 @@ public class EnemyDropScreen extends AppCompatActivity implements View.OnClickLi
     }
 
     private static View venView;
+    //Set up what the vendor has in their inventory (Enemy)
     public void setUpVendorInventory(View view)
     {
         venView = view;
@@ -108,21 +110,18 @@ public class EnemyDropScreen extends AppCompatActivity implements View.OnClickLi
             text.setText(itemName);
             text.setKeyListener(null);
             inventoryColumns.addView(text);
-
-            if(!it.isKeyItem() && !it.isEquipped()) {
-                Button b = new Button(view.getContext());
-
-                b.setWidth(b.getWidth() / 2);
-                b.setHeight(b.getHeight() / 2);
-                b.setText("Take");
-                b.setOnClickListener(this);
-                b.setTag("0," + it.getId());
-                inventoryColumns.addView(b);
-            }
+            Button b = new Button(view.getContext());
+            b.setWidth(b.getWidth() / 2);
+            b.setHeight(b.getHeight() / 2);
+            b.setText("Take");
+            b.setOnClickListener(this);
+            b.setTag("0," + it.getId());
+            inventoryColumns.addView(b);
             inventoryRows.addView(inventoryColumns);
         }
     }
 
+    //Handles taking and giving items
     @Override
     public void onClick(View v) {
 
@@ -143,11 +142,11 @@ public class EnemyDropScreen extends AppCompatActivity implements View.OnClickLi
             dropInventory.add(Player.getPlayer().inventory.findItemById(itemId));
             Player.getPlayer().inventory.drop(itemId);
         }
-
         setUpVendorInventory(venView);
         setUpPlayerInventory(vi);
     }
 
+    //Handles finish looting
     public void okPressed(View v)
     {
         dropInventory = null;

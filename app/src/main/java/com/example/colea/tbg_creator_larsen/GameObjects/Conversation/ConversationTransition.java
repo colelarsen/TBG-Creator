@@ -11,6 +11,7 @@ public abstract class ConversationTransition {
     {
     }
 
+    //Displayed Text for Edit view
     public abstract String getEditMainId();
 
     public abstract String getUUID();

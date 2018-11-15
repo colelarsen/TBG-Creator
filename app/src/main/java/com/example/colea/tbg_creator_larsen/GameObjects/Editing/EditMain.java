@@ -41,6 +41,8 @@ import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Random
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.State;
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.SwitchLeverTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.TransitionsStates.Transition;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -55,6 +57,10 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         setContentView(R.layout.activity_edit_main);
     }
 
+
+
+    //Handles when a '+' button is clicked. And opens the corresponding Edit activity
+    //If there are multiple object types it opens a drop down menu
     public void onAddClick(View view)
     {
         if(view.getId() == findViewById(R.id.addState).getId())
@@ -130,12 +136,15 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
+    //Opens the player edit activity
     public void onPlayerEdit(View view)
     {
         PlayerEditing.givenPlayer = gameObjects.player;
         startActivity(new Intent(view.getContext(), PlayerEditing.class));
     }
 
+    //Handles when an 'Edit' button is clicked. It uses tags to pass the Edit Activity the corresponding object
+    //And opens that activity
     public void onClick(View view)
     {
         String tag = view.getTag().toString();
@@ -345,7 +354,7 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
-    //Dropdown menu stuff
+    //Dropdown menu that opens the corresponding Edit acitvity
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         String type = item.getTitle().toString();
@@ -438,11 +447,16 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
         return true;
     }
 
+    //Handles the main save button
     public void saveGame(View view)
     {
         gameObjects.saveGame(view);
     }
 
+
+
+    //Handles when a user clicks on one of the drop down objects
+    //It uses the addObjects function to add all of the GameObjects under the dropdown
     public void onDropDownClick(View view)
     {
         ArrayList<String> strings = new ArrayList<>();
@@ -664,9 +678,18 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
 
     }
 
+    //Index is where to start adding objects
+    //AddThis is the displayed strings being passed
+    //Types is the type info of the objects
+    //Ids is the ids of the given objects
+    //Close the dropDown if it was the lastDropped
     private static int lastDropped = -1;
     public void addObjects(int index, ArrayList<String> addThis, ArrayList<String> types, ArrayList<String> ids) {
+
+        //What not to delete
         int[] dontDelete = {R.id.stateDrop, R.id.transDrop, R.id.itemsDrop, R.id.effectsDrop, R.id.condsDrop, R.id.enemiesDrop, R.id.NPCDrop, R.id.convoDrop, R.id.convoTransDrop, R.id.SaveEditGameButton};
+
+       //Remove all views inbetween the dontDelete objects
         LinearLayout mainLinear = findViewById(R.id.editMainLinear);
         for (int i = 0; i < dontDelete.length - 1; i++) {
             int id1 = dontDelete[i];
@@ -680,6 +703,7 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
             }
         }
 
+        //If the dropDown pressed is not open, open it and add all the objects
         if (lastDropped != index) {
             lastDropped = index;
             LinearLayout newLayout = new LinearLayout(getBaseContext());
@@ -710,6 +734,7 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
                 i++;
             }
         }
+        //If the dropped down pressed is open, then delete all the views and "close" it
         else
         {
             lastDropped = -1;

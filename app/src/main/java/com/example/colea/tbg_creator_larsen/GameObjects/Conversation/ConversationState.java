@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ConversationState {
-
+    //A basic conversation state, mostly just holds data
     public ConversationTransition[] transitions = new ConversationTransition[4];
     public String text;
     public int id;
@@ -99,29 +99,6 @@ public class ConversationState {
 
     public int getId() {
         return id;
-    }
-
-    //Temporary
-    public static ConversationState getStartState() {
-        ConversationState startState = new ConversationState("Hello");
-        NormalConversationTransition option1 = new NormalConversationTransition("Hello There");
-        NormalConversationTransition option2 = new NormalConversationTransition("Goodbye");
-        NormalConversationTransition option3 = new NormalConversationTransition("Heck Yourself");
-        NormalConversationTransition option4 = new NormalConversationTransition("Uhhhh...");
-
-        ConversationState state10 = new ConversationState("Welp, see Ya");
-        ConversationState state11 = new ConversationState("Goodbye?");
-        ConversationState state12 = new ConversationState("NO HECK YOU");
-        ConversationState state13 = new ConversationState("Hmm");
-
-        option1.setState(state10);
-        option2.setState(state11);
-        option3.setState(state12);
-        option4.setState(state13);
-
-        ConversationTransition[] ops = {option1, option2, option3, option4};
-        startState.transitions = ops;
-        return startState;
     }
 
     public void setTransitions(ConversationTransition[] transitions) {
