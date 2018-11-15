@@ -7,7 +7,7 @@ public class Inventory {
     private static Inventory i = new Inventory();
 
     private ArrayList<Item> items;
-    private int itemCap;
+    public int itemCap;
     public int gold;
 
     private Inventory()
@@ -17,59 +17,51 @@ public class Inventory {
         items = new ArrayList<>();
     }
 
-    private Inventory(int itemCa)
+    public Inventory(int itemCa)
     {
         items = new ArrayList<>();
         itemCap = itemCa;
     }
 
-    public static Inventory getInventory()
-    {
-        return i;
-    }
-
     private void updateItemCap(int iCap)
     {
-        Inventory temp = getInventory();
-        temp.itemCap = iCap;
-        updateInventory(temp);
+        itemCap = iCap;
     }
 
-    private static void updateInventory(Inventory t)
-    {
-        i = t;
-    }
 
     public void add(Item x)
     {
-        Inventory temp = getInventory();
-        if(temp.itemCap == 0 || temp.itemCap > temp.items.size())
+        if(itemCap == 0 || itemCap > items.size())
         {
-            temp.items.add(x);
-            updateInventory(temp);
+            items.add(x);
         }
     }
 
-    public void drop(int itemNum)
+    public void drop(int itemId)
     {
-        Inventory temp = getInventory();
         Inventory i = new Inventory();
-        for(Item item : temp.items)
+        boolean alreadyDropped = false;
+        for(Item item : items)
         {
-            if(item.getId() != itemNum)
+            if(item.getId() != itemId)
+            {
+                i.items.add(item);
+            }
+            else if(!alreadyDropped)
+            {
+                alreadyDropped = true;
+            }
+            else if(alreadyDropped)
             {
                 i.items.add(item);
             }
         }
-        i.gold = temp.gold;
-        i.itemCap = temp.itemCap;
-        updateInventory(i);
+        items = i.items;
     }
 
-    public String itemString()
+    public String itemString(Inventory tempInv)
     {
         String temp = "-----------\n";
-        Inventory tempInv = getInventory();
         for(Item item : tempInv.items)
         {
             temp.concat(item.getName() + ", " + item.getValue() + ": " + item.getDescription());
@@ -80,10 +72,21 @@ public class Inventory {
 
     public Item findItemById(int id)
     {
-        Inventory tempInv = getInventory();
-        for(Item item : tempInv.items)
+        for(Item item : items)
         {
             if(item.getId() == id)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public Item findItemByName(String s)
+    {
+        for(Item item : items)
+        {
+            if(item.getName().compareTo(s) == 0)
             {
                 return item;
             }
