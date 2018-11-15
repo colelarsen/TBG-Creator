@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class RandomTransitionType1 extends Transition {
 
     //TYPE 1 OF RANDOM
+    //Choice words definite (transition with destination) is random
 
     public String displayString;
     public Conditional conditional;

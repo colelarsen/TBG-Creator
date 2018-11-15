@@ -30,43 +30,18 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     public static int TURN_DURATION = 2000;
     private View currentView;
 
-    //@ToDO
-    //Combat player dying is broken
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combat);
         currentView = findViewById(R.id.enemyScrollView).getRootView();
-        //testCombat();
-        startCombat();
-    }
-
-    //Set up test combat
-    private void testCombat()
-    {
-        Weapon badWe = new Weapon("None", "None", 0, true, 1);
-        Equipment badAr = new Equipment("None", "None", 0, true, 0);
-        Enemy rat = new Enemy(10, 10, "Bagel", "Large Rat", badWe, badAr, null, null, false, null, null);
-        Enemy rat2 = new Enemy(10, 10, "Rat But Bigger", "Large Rat", badWe, badAr, null, null, false, null, null);
-
-        Enemy[] enemies = new Enemy[2];
-        enemies[0] = rat;
-        enemies[1] = rat2;
-        Combat.enemies = enemies;
-
-        TextView combatInfo = findViewById(R.id.combatInfo);
-        combatInfo.setKeyListener(null);
-        updateCombatInfo(Player.getPlayer().name + "'s Turn");
-
-        TextView playerInfo = findViewById(R.id.player_Info);
-        playerInfo.setKeyListener(null);
-
         startCombat();
     }
 
     private void startCombat()
     {
+        deadOrRun = false;
         for(int i = 0; i < enemies.length; i++)
         {
             for(int j = 0; j < enemies.length; j++)
@@ -260,6 +235,7 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
         }
     }
 
+    //This handles the player clicking on a drop down menu item
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if(whatMenu == 0) {
@@ -305,6 +281,7 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
                         updateCombatInfo(Player.getPlayer().name + " Ran Away");
                     }
                 }, 1000);
+                deadOrRun = true;
                 endCombat();
             }
             else {
@@ -628,12 +605,13 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
     */
 
     //Segues back to the main game screen
+    private boolean deadOrRun = false;
     public void endCombat()
     {
         Player p = Player.getPlayer();
         p.combatOver();
 
-        if(p.getHealth() > 0) {
+        if(p.getHealth() > 0 && !deadOrRun) {
             for(Enemy e : enemies)
             {
                 EnemyDropScreen.addToDrops(e.drops, e.dropChance);
@@ -648,9 +626,13 @@ public class Combat extends AppCompatActivity implements PopupMenu.OnMenuItemCli
                 }
             }, 4000);
         }
-        else //Player hecking died
+        else if(p.getHealth() <= 0) //Player hecking died or
         {
-
+            startActivity(new Intent(Combat.this, TestActivity.class));
+        }
+        else //Player Ran Away
+        {
+            startActivity(new Intent(Combat.this, TestActivity.class));
         }
     }
 

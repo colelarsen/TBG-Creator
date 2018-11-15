@@ -174,7 +174,9 @@ public class OneTimeTransition extends Transition {
     {
         for(Transition transition : chainTransitions)
         {
-            transition.trans(t);
+            if(transition.check()) {
+                transition.trans(t);
+            }
         }
         goneYet = true;
         return toTrans;

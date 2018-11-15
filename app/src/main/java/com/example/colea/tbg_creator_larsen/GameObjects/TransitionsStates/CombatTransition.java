@@ -112,7 +112,9 @@ public class CombatTransition extends Transition {
     {
         for(Transition transition : chainTransitions)
         {
-            transition.trans(t);
+            if(transition.check()) {
+                transition.trans(t);
+            }
         }
         if(!alreadyHappened)
         {

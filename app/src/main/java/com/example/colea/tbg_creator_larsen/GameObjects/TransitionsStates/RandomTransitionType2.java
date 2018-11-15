@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class RandomTransitionType2 extends Transition {
 
     //TYPE 2
+    //(Choice words match the transition and destination) which are random
 
     public Conditional conditional;
     public ArrayList<Transition> transitions;

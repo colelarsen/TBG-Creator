@@ -1,0 +1,8 @@
+Editing activities will all do the same thing besides EditMain
+
+They are given an object and set all their fields to that object's fields
+
+On save they either update their given object or create a new object and add it to EditMain's GameObject field.
+
+TextViews will probably be drop downs
+EditText will probably be for numbers or text

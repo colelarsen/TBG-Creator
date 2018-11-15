@@ -53,6 +53,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class GameObjects {
+
+    //This controller handles most of the editing / is the first step to saving
+    //It has all objects and dictates how to save
+
     public ArrayList<State> states = new ArrayList<State>();
     public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     public ArrayList<Item> items = new ArrayList<Item>();

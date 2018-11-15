@@ -140,6 +140,9 @@ public class HasObject extends Conditional {
         return id;
     }
 
+
+
+    //Check if player has the given string name
     public boolean check() {
         boolean ret = false;
         if(or != null)

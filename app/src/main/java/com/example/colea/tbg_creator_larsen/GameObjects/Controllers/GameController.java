@@ -23,6 +23,8 @@ public class GameController {
         return id++;
     }
 
+    //Handles transitioning between states
+    //This func is called from TestActivity
     public static State transStates(TestActivity t, int choice) {
         if (currentState.getTransitions()[choice] != null) {
             State transTo = currentState.getTransitions()[choice].trans(t);
@@ -34,6 +36,7 @@ public class GameController {
         return null;
     }
 
+    //Return effect by id
     public static Effect getEffectById(int id)
     {
         for(Effect e: effects)
@@ -46,6 +49,7 @@ public class GameController {
         return null;
     }
 
+    //Return effect by name
     public static Effect getEffectByName(String s)
     {
         for(Effect e: effects)

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class RandomTransitionType3 extends Transition {
 
     //TYPE 3
+    //The choice words are the same, (the transition is different), destination is the same
 
     public Conditional conditional;
     public ArrayList<Transition> transitions;

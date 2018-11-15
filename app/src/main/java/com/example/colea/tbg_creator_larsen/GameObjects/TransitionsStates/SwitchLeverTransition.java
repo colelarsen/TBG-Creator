@@ -161,7 +161,9 @@ public class SwitchLeverTransition extends Transition {
     {
         for(Transition transition : chainTransitions)
         {
-            transition.trans(t);
+            if(transition.check()) {
+                transition.trans(t);
+            }
         }
         ConditionalSwitch.switchSwitch(switc);
         return toTrans;

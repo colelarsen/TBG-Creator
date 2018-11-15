@@ -29,19 +29,9 @@ import java.util.ArrayList;
 
 public class PlayerInfo extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+
     private ViewPager mViewPager;
 
     @Override
@@ -64,9 +54,8 @@ public class PlayerInfo extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+
+    //Where all the work happens
     public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
         /**
          * The fragment argument representing the section number for this
@@ -89,6 +78,8 @@ public class PlayerInfo extends AppCompatActivity {
             return fragment;
         }
 
+
+        //Generates fragments
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -113,6 +104,7 @@ public class PlayerInfo extends AppCompatActivity {
         }
 
 
+        //Sets up player information / stats
         private static View pinfoView;
         public void setUpPlayerInfo(View view)
         {
@@ -127,6 +119,7 @@ public class PlayerInfo extends AppCompatActivity {
         }
 
 
+        //Sets up player inventory with use/equip buttons
         private static View vi;
         public void setUpPlayerInventory(View view)
         {
@@ -220,6 +213,7 @@ public class PlayerInfo extends AppCompatActivity {
         }
 
 
+        //Handles button presses
         @Override
         public void onClick(View v) {
 
@@ -295,6 +289,7 @@ public class PlayerInfo extends AppCompatActivity {
             setUpPlayerInfo(pinfoView);
         }
 
+        //Sets up player spells
         static View spellView;
         public void setUpPlayerSpells(View view)
         {
@@ -350,10 +345,19 @@ public class PlayerInfo extends AppCompatActivity {
 
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+
+
+
+
+
+
+
+
+
+
+
+
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

@@ -35,12 +35,14 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
         updateButtons();
     }
 
+    //Updates the main text to the given string
     public void updateText(String s)
     {
         EditText mainText = findViewById(R.id.chatLog);
         mainText.getText().append("\n\n" + s);
     }
 
+    //Updates the button text to whatever the current State is
     public void updateButtons()
     {
         checkPassive();
@@ -75,6 +77,7 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //Used to see if the talking enemy is passive or not
     public void checkPassive()
     {
         if(currentNPC.passiveState(currentState.getId()))
@@ -84,11 +87,14 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //Handles button presses to transition to new states.
     @Override
     public void onClick(View v) {
         int choice = (int) v.getTag();
         ConversationTransition[] transitions = currentState.getTransitions();
         ConversationTransition trans = transitions[choice];
+
+        //If the trans conditional is true
         if(trans.check()) {
             if (!(trans instanceof TradingConversationTransition && currentNPC instanceof NPC)) {
                 updateText("You: " + trans.getDisplayString());
@@ -97,13 +103,18 @@ public class Conversation extends AppCompatActivity implements View.OnClickListe
                     updateText(currentNPC.getName() + ": " + currentState.getText());
                     updateButtons();
                 }
+
+                //This should never happen
                 else
                 {
                     currentState = new ConversationState("");
                     updateText(currentNPC.getName() + ": " + currentState.getText());
                     updateButtons();
                 }
-            } else if (trans instanceof TradingConversationTransition && currentNPC instanceof NPC) {
+            }
+
+            //Start trading activity if NPC and Trading Conversation Transition
+            else if (trans instanceof TradingConversationTransition && currentNPC instanceof NPC) {
                 NPC vendor = (NPC) currentNPC;
                 if (vendor.canTrade) {
                     Trading.vendor = vendor;

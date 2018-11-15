@@ -30,6 +30,7 @@ public class Trading extends AppCompatActivity implements View.OnClickListener {
 
 
 
+    //Sets up the player inventory
     private static View vi;
     public void setUpPlayerInventory(View view)
     {
@@ -68,6 +69,7 @@ public class Trading extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    //Set up the NPC inventory
     public static NPC vendor;
     private static View venView;
     public void setUpVendorInventory(View view)
@@ -90,26 +92,25 @@ public class Trading extends AppCompatActivity implements View.OnClickListener {
             text.setKeyListener(null);
             inventoryColumns.addView(text);
 
-            if(!it.isKeyItem() && !it.isEquipped()) {
-                Button b = new Button(view.getContext());
-
-                b.setWidth(b.getWidth() / 2);
-                b.setHeight(b.getHeight() / 2);
-                b.setText("Buy");
-                b.setOnClickListener(this);
-                b.setTag("0," + it.getId());
-                inventoryColumns.addView(b);
-            }
+            Button b = new Button(view.getContext());
+            b.setWidth(b.getWidth() / 2);
+            b.setHeight(b.getHeight() / 2);
+            b.setText("Buy");
+            b.setOnClickListener(this);
+            b.setTag("0," + it.getId());
+            inventoryColumns.addView(b);
             inventoryRows.addView(inventoryColumns);
         }
     }
 
+
+    //Handles buying / selling
     @Override
     public void onClick(View v) {
-
         String[] tags = ((String)v.getTag()).split(",");
-
         int itemId = Integer.parseInt(tags[1]);
+
+
         //Buying From vendor
         if(tags[0].compareTo("0") == 0)
         {
@@ -121,6 +122,7 @@ public class Trading extends AppCompatActivity implements View.OnClickListener {
                 vendor.inventory.drop(i.getId());
             }
         }
+
         //Selling to Vendor
         else
         {
@@ -132,9 +134,6 @@ public class Trading extends AppCompatActivity implements View.OnClickListener {
                 Player.getPlayer().inventory.gold += i.getValue();
             }
         }
-
-
-
         setUpVendorInventory(venView);
         setUpPlayerInventory(vi);
     }
