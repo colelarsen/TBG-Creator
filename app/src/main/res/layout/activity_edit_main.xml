@@ -63,7 +63,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -89,6 +89,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/stateHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -101,7 +111,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -127,6 +137,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/transHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -139,7 +159,7 @@
                     android:id="@+id/textView13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -165,6 +185,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/itemHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -178,7 +208,7 @@
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -204,6 +234,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/effectHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -217,7 +257,7 @@
                     android:id="@+id/textView15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -243,6 +283,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/condHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -256,7 +306,7 @@
                     android:id="@+id/textView16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -282,6 +332,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/enemyHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -295,7 +355,7 @@
                     android:id="@+id/textView17"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -321,6 +381,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/npcHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -334,7 +404,7 @@
                     android:id="@+id/textView18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -360,6 +430,16 @@
                     android:text="                    +"
                     android:textSize="24sp" />
 
+                <TextView
+                    android:id="@+id/convoStateHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
+                    android:textSize="24sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -373,7 +453,7 @@
                     android:id="@+id/textView19"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.8"
+                    android:layout_weight="1.7"
                     android:clickable="true"
                     android:onClick="onDropDownClick"
                     android:textSize="24sp"
@@ -397,6 +477,16 @@
                     android:clickable="true"
                     android:onClick="onAddClick"
                     android:text="                    +"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/convoTransHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:onClick="onHelpClick"
+                    android:text="   ?"
                     android:textSize="24sp" />
 
             </LinearLayout>

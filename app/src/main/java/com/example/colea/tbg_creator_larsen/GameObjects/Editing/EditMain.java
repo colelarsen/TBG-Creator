@@ -1,6 +1,8 @@
 package com.example.colea.tbg_creator_larsen.GameObjects.Editing;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.ConditionalS
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.HasObject;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conditional.HasSpell;
 import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.GameObjects;
+import com.example.colea.tbg_creator_larsen.GameObjects.Controllers.MainAppController;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ChangeBaseStateConversationTransition;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationState;
 import com.example.colea.tbg_creator_larsen.GameObjects.Conversation.ConversationTransition;
@@ -451,6 +454,92 @@ public class EditMain extends AppCompatActivity implements View.OnClickListener,
     public void saveGame(View view)
     {
         gameObjects.saveGame(view);
+    }
+
+    //Handles help clicked
+    public void onHelpClick(View view)
+    {
+        // https://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
+        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+                dialog.dismiss();
+            }
+        });
+
+        if(view.getId() == findViewById(R.id.stateHelp).getId())
+        {
+            builder.setTitle("State Help");
+            builder.setMessage("States are the location of the character, they are displayed as the main text of the game screen" +
+                    ".\nStates can have up to 8 transitions which transfer you to other states. States can also be something the " +
+                    " player is looking at, like a map.");
+        }
+        if(view.getId() == findViewById(R.id.transHelp).getId())
+        {
+            builder.setTitle("Transition Help");
+            builder.setMessage("Transitions are the path between states. They represent choices that players make " +
+                    "Normal Transitions will only change states, the other transitions apply special effects when they transition." +
+                    "\nA \"Chain\" will apply the effects of multiple transitions at once, allowing you to Pick up and item and" +
+                    " start combat at the same time for instance. Random Transitions can not have chains. All transitions must include" +
+                    " the state that they are transitioning to. Conditionals will make transitions only appear if the condition is met" +
+                    ". This includes in chains.");
+        }
+        if(view.getId() == findViewById(R.id.itemHelp).getId())
+        {
+            builder.setTitle("Item Help");
+            builder.setMessage("Items come in three categories: Item, Weapon, Equipment. Items are stored in the player inventory" +
+                    " can be put in NPC inventory, and as enemy drops. Weapons and Equipments can be equipped to the player or " +
+                    "an enemy to increase their stats. Normal Items can have effects that can be used inside or outside combat " +
+                    "depending on what you set it to.");
+        }
+        if(view.getId() == findViewById(R.id.effectHelp).getId())
+        {
+            builder.setTitle("Effect Help");
+            builder.setMessage("Effects are something akin to Spells, they apply the effect to the target selected by the player. " +
+                    "There is no limit to effects right now so giving a player a healing spell will have them always at 100% hp if " +
+                    "you let them use it outside combat. More effect types will be added in the future.");
+        }
+        if(view.getId() == findViewById(R.id.condHelp).getId())
+        {
+            builder.setTitle("Conditional Help");
+            builder.setMessage("Conditionals are used for special events / world building. They can be used for progressing the game" +
+                    " and other interesting ideas. They have a \"And\" and \"Or\" conditional, which lets you chain them together." +
+                    " If you set the \"Not\" checkbox then the conditonal will be inverted and do the opposite of what it used to.");
+        }
+        if(view.getId() == findViewById(R.id.enemyHelp).getId())
+        {
+            builder.setTitle("Enemy Help");
+            builder.setMessage("Enemies are required to have a weapon and equipment. If they do not the app will crash. " +
+                    "Enemies attack and defence are determined by their weapon and equipment. Enemies can drop items for the " +
+                    "player to pick up. Enemies can be talked to and be passive when you reach the passive state through talking.");
+        }
+        if(view.getId() == findViewById(R.id.npcHelp).getId())
+        {
+            builder.setTitle("NPC Help");
+            builder.setMessage("NPC are there for the player to talk to and trade with. NPC lets your world feel a little bit" +
+                    " more alive. Trading is also a useful mechanic. Right now trading is the only way to gain Gold for the player.");
+        }
+        if(view.getId() == findViewById(R.id.convoStateHelp).getId())
+        {
+            builder.setTitle("Conversation State Help");
+            builder.setMessage("Conversation States are much like normal States. They represent what an NPC just said. " +
+                    "Conversation Transitions change the Conversation State.");
+
+        }
+        if(view.getId() == findViewById(R.id.convoTransHelp).getId())
+        {
+            builder.setTitle("Conversation Transition Help");
+            builder.setMessage("Conversation Transitions represent what the player says. Conversation transitions can start" +
+                    " trades with NPC, or change what the NPC's starting conversation state the next time you talk to them. " +
+                    "Normal Conversation Transitions only change the state.");
+        }
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 
